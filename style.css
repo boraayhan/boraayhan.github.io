@@ -149,6 +149,7 @@ ul li:hover {
     .mobile {
         display: block;
     }
+
     html {
         overflow: hidden;
     }
@@ -173,7 +174,8 @@ ul li:hover {
 
     .title {
         width: 500px;
-        padding-top: 300px;
+        padding-top: 325px;
         text-align: center;
+        margin: auto;
     }
 }
