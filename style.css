@@ -125,7 +125,34 @@ ul li:hover {
     margin-bottom: 10px;
 }
 
+#signature {
+    margin-left: 15px;
+    height: 5em;
+}
+
+.topimg {
+    position: absolute;
+    z-index: -5;
+    filter: brightness(20%);
+    object-fit: cover;
+    width: 100%;
+    height: 60%;
+    object-position: center 55\;
+}
+
+.mobile {
+    display: none;
+}
+
 @media only screen and (max-width: 600px) {
+
+    .mobile {
+        display: block;
+    }
+    html {
+        overflow: hidden;
+    }
+
     header nav {
         display: none;
     }
@@ -133,15 +160,20 @@ ul li:hover {
     #hamburger-icon {
         display: block;
     }
-}
 
-#signature {
-    margin-left: 15px;
-    height: 5em;
-}
+    .topimg {
+        position: absolute;
+        z-index: -5;
+        filter: brightness(20%);
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        object-position: center 55\;
+    }
 
-.topimg {
-    position:absolute;
-    z-index: -5;
-    filter:brightness(50%);
+    .title {
+        width: 500px;
+        padding-top: 300px;
+        text-align: center;
+    }
 }
