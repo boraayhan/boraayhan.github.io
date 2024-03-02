@@ -160,9 +160,9 @@ ul li:hover {
 
 .itemcontainer {
     position: relative;
-    top: 600px; /* Adjust top to match header height */
+    top: 600px;
     text-align: center;
 }
 .itemcontainer img {
-    margin: 0 100px; /* Adjust margin to space out images */
+    margin: 0 100px;
 }
