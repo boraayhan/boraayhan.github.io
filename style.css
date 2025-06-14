@@ -1,168 +1,327 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
-html {
-    font-family: "Lato", sans-serif;
-}
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 body {
-    background-color: #353836;
-    color: white;
+  font-family: 'Space Grotesk', serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--bg-main);
 }
 
-header a {
-    text-decoration: none;
+
+:root {
+  --bg-main: #101418;
+  --bg-section: #181D22;
+  --primary: #00B8D9;
+  --accent: #C18713;
+  --accent-light: #f4a968;
+  --accent-dark: #16A085;
+  --text: #EEEEEE;
+  --tidbit: #c4c4c4;
+  --subtitle: #ffc956;
+  --list: #c7c7c7;
+  --title: #e2e2e2;
+  --inline-date: #9c9c9c;
+  --date-small: #a4a4a4;
+  --link: #003ba9fe;
+
 }
 
-header {
-    width: 100%;
-    position: absolute;
-    padding: 0 20px;
-    height: 75px;
-    display: flex;
-    justify-content: space-between;
+.profile-pic {
+  border-radius: 3px;
+}
+
+.nav-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  border-top: 1px solid var(--accent);
+  padding-top: 1.5rem;
+}
+
+.nav-container a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.nav-container a:hover {
+  color: var(--accent);
+  transform: scale(1.02);
+  transition: 0.4s ease;
+}
+
+.hero-wrapper h1 {
+  color: var(--text);
+  margin: 0;
+}
+
+.credential h1 {
+  color: var(--tidbit);
+}
+
+.hero-wrapper h2 {
+  margin: 0;
+  color: var(--accent) !important;
+}
+
+.hero-wrapper p {
+  color: var(--title);
+}
+
+.hero-wrapper {
+  display: flex;
+  grid-template-columns: auto auto;
+  align-items: center;
+  padding: 0 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left {
+  width: 75%;
+  flex-direction: column;
+  align-items: left;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+}
+
+.social-icon {
+  margin: 0.5rem 0.5rem 0;
+  width: 30px;
+  height: 30px;
+  transition: all 0.2s ease;
+  background: none;
+  border-radius: 0;
+}
+
+.credential a {
+  color: var(--link)
+}
+
+.social-icon:hover {
+  transform: translateY(-2px) scale(1.07);
+  filter: brightness(1.5);
+}
+
+h3 {
+  color: var(--text);
+}
+
+.social-links a {
+  text-decoration: none;
+  /*
+  Single-handedly the dumbest problem I've ever had to solve. 
+  There was a stupid artifact for no reason under the GitHub icon w/o this.
+  What a great way to waste 10 minutes. I love CSS.
+  */
+}
+
+.category-wrapper {
+  width: 80vw;
+  max-width: 1300px;
+  margin: auto;
+  padding: 1.2rem;
+  box-sizing: border-box;
+  background: var(--bg-section);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+.category-wrapper h2 {
+  color: var(--title);
+}
+
+.credential {
+  width: 90%;
+  display: flex;
+  padding: 1.2rem;
+  border-left: 3px solid var(--accent);
+  flex: 1;
+  margin: auto;
+  border-radius: 0 5px 5px 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 222, 147, 0.05);
+}
+
+.credential:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(0.2rem) scale(1.01);
+  box-shadow: 0 4px 12px rgba(145, 177, 169, 0.12);
+}
+
+
+.date-wrapper {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  color: var(--text);
+  font-weight: 400;
+  text-align: center;
+  margin-right: -0.8rem;
 }
 
 ul {
-    position: static;
-    list-style: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  color: var(--list);
+  padding: 0;
+  width: 100%;
 }
 
-ul a {
-    font-size: 24px;
-    color: white;
+.cred-tidbit {
+  color: var(--tidbit)
 }
 
-ul li {
-    padding: 5px;
-    margin-left: 10px;
+.cred-subtitle {
+  color: var(--subtitle);
+  width: 100%
 }
 
-ul li:hover {
-    transform: scale(1.1);
-    transition: 0.3s;
-    text-decoration: underline solid 2px;
-    text-underline-offset: 22px;
+.credential-container {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-#hamburger-icon {
-    margin: auto 0;
-    display: none;
-    cursor: pointer;
+.cred-info-wrapper {
+  flex-shrink: 0;
+  display: block;
+  padding: 0;
+  width: 40%;
+  margin: 0;
 }
 
-#hamburger-icon div {
-    width: 35px;
-    height: 3px;
-    background-color: white;
-    margin: 6px 0;
-    transition: 0.4s;
+.credential dd {
+  color: var(--text-darker)
 }
 
-.open .bar1 {
-    -webkit-transform: rotate(-45deg) translate(-6px, 6px);
-    transform: rotate(-45deg) translate(-6px, 6px);
+.list {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
 }
 
-.open .bar2 {
-    opacity: 0;
+.inline-date {
+  color: var(--inline-date);
+  text-align: left;
+  font-family: 'Space Mono', monospace;
+  margin-left: auto;
+  margin-right: 3rem;
 }
 
-.open .bar3 {
-    -webkit-transform: rotate(45deg) translate(-6px, -8px);
-    transform: rotate(45deg) translate(-6px, -8px);
+.bullet-p {
+  color: var(--list);
 }
 
-.open .mobile-menu {
+@media (max-width: 1080px) {
+
+  .hero-left h1 {
+    font-size: 40px !important;
+  }
+
+  .hero-left h2 {
+    font-size: 20px !important;
+  }
+  
+  .bullet-p {
+    text-align: center;
+    width: 100%;
+    margin: 1rem auto auto;
+  }
+
+  .cred-info-wrapper {
+    width: 100%;
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-}
-
-.mobile-menu {
-    display: none;
-    font-size: 35px;
-    position: absolute;
-    top: 100px;
-    left: 0;
-    height: calc(100vh - 50px);
-    width: 100%;
-}
-
-.mobile-menu li {
-    margin-bottom: 10px;
-}
-
-#signature {
-    margin-left: 15px;
-    height: 5em;
-}
-
-.topimg {
-    position: absolute;
-    z-index: -5;
-    filter: brightness(20%);
-    object-fit: cover;
-    width: 100%;
-    height: 60%;
-    object-position: center 55\;
-}
-
-.mobile {
-    display: none;
-}
-
-@media only screen and (max-width: 600px) {
-
-    .mobile {
-        display: flex;
-    }
-
-    html {
-        overflow: hidden;
-    }
-
-    header nav {
-        display: none;
-    }
-
-    #hamburger-icon {
-        display: block;
-    }
-
-    .topimg {
-        position: absolute;
-        z-index: -5;
-        filter: brightness(20%);
-        width: 100%;
-        height: 100%;
-        object-position: center 55%;
-    }
-
-    .title {
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.itemcontainer {
-    position: relative;
-    top: 600px;
     text-align: center;
-}
-.itemcontainer img {
-    margin: 0 100px;
+  }
+
+  .cred-info-wrapper h3,
+  .cred-info-wrapper p {
+    width: 100%;
+    margin: 1rem 0 0;
+  }
+
+  .cred-tidbit {
+    color: #ffffff;
+  }
+
+  .credential-container {
+    flex-direction: column;
+  }
+
+  .credential {
+    flex-direction: column;
+    padding: 1rem;
+    margin: auto;
+    border-radius: 5px;
+  }
+
+  .date-wrapper {
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin-bottom: -2.8rem;
+  }
+
+  .cred-date {
+    color: var(--date-small);
+    font-weight: 300;
+  }
+
+  .inline-date {
+    width: 100%;
+    text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .list {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .position-title {
+    margin-right: 5rem;
+  }
+
+  .hero-wrapper {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .hero-left {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nav-container {
+    gap: 1rem;
+  }
+
+  .navlink {
+    width: 33.3%
+  }
+
+  .hero-right {
+    margin-top: 2rem;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
 }
