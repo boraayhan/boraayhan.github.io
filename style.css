@@ -81,12 +81,14 @@ body {
 }
 
 .hero-left {
+  order: 1;
   width: 75%;
   flex-direction: column;
   align-items: left;
 }
 
 .hero-right {
+  order: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -305,6 +307,7 @@ ul {
   }
 
   .hero-left {
+    order: 2;
     width: 100%;
     align-items: center;
     text-align: center;
@@ -319,6 +322,7 @@ ul {
   }
 
   .hero-right {
+    order: 1;
     margin-top: 2rem;
     width: 100%;
     align-items: center;
