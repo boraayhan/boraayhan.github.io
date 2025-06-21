@@ -56,6 +56,8 @@ body {
 .hero-wrapper h1 {
   color: var(--text);
   margin: 0;
+  text-align: left;
+  width: 90%;
 }
 
 .credential h1 {
@@ -80,9 +82,15 @@ body {
   overflow: hidden;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .hero-left {
   order: 1;
-  width: 75%;
+  width: 100%;
   flex-direction: column;
   align-items: left;
 }
@@ -116,6 +124,7 @@ body {
 
 h3 {
   color: var(--text);
+  padding-right: 1rem;
 }
 
 .social-links a {
@@ -178,7 +187,9 @@ ul {
 }
 
 .cred-tidbit {
-  color: var(--tidbit)
+  color: var(--tidbit);
+  padding-right: 0.5rem;
+
 }
 
 .cred-subtitle {
@@ -225,16 +236,17 @@ ul {
   color: var(--list);
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1100px) {
 
   .hero-left h1 {
+    text-align: center;
     font-size: 40px !important;
   }
 
   .hero-left h2 {
     font-size: 20px !important;
   }
-  
+
   .bullet-p {
     text-align: center;
     width: 100%;
@@ -327,5 +339,11 @@ ul {
     width: 100%;
     align-items: center;
     text-align: center;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 }
