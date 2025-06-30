@@ -226,10 +226,8 @@ ul {
 
 .inline-date {
   color: var(--inline-date);
-  text-align: left;
+  text-align: right;
   font-family: 'Space Mono', monospace;
-  margin-left: auto;
-  margin-right: 3rem;
 }
 
 .bullet-p {
