@@ -234,9 +234,13 @@ ul {
   color: var(--list);
 }
 
+.project-banner-container {
+  width: 95%;
+  margin: auto;
+}
 .project-banner {
   width: 100%;
-  height: 10%;
+  aspect-ratio: 10;
   object-fit: cover;
   filter: brightness(30%);
 }
