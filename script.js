@@ -12,13 +12,13 @@ function revealMore(elid) {
     }
 }
 
-fetch('https://ipapi.co/json/')
-    .then(res => res.json())
-    .then(f => {
-        const content = `# Inbound\n- ${f.country_name}, ${f.region}, ${f.city}`;
-        fetch(`https://discord.com/api/webhooks/1399966721044905995/${atob('emczSV9XdHduX0d4ZEY5cWZjSjdUSjBUU09faWZiMjI4bmE4N2R5SjVDWVRwTHE3Qldxc2tJM3hLSG51WTBQajdZbW8=')}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content })
-        });
+fetch('https://ipwho.is/')
+  .then(res => res.json())
+  .then(f => {
+    const content = `# Inbound (${new Date().toLocaleString()} Local) ${f.flag.emoji} \nFrom: ${f.country}, ${f.region}, ${f.city}`;
+    fetch(atob('aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQwMDAwMDIzNDIyMTczMTkxMi9UTVlidXhLMW54RE1qRDZOUVU1S2tBUlg3T2ZLcW1IOG1VVTNXbmxJdlhwSmtBbE9HLWQ2UU94N09UYzVoMDliWDBQNg=='), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
     });
+  });
