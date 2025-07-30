@@ -54,11 +54,11 @@
         <section class="category-wrapper">
             <h2>Software</h2>
             <div class="credential-container">
-                <div onclick="revealMore('aria-info');" class="project-banner-container">
+                <div onclick="revealMore('aria');" class="project-banner-container">
                     <img src="/assets/project-banners/aria-banner.jpeg" class="project-banner"
                         style="object-position: center 63%;" alt="">
-                    <h1 class="project-title" id="aria-info-title">Internship at ARIA Lab @ Mines</h1>
-                    <div id="aria-info" class="project-info-wrapper">
+                    <h1 class="project-title" id="aria-title">Internship at ARIA Lab @ Mines</h1>
+                    <div id="aria" class="project-info-wrapper">
                         <div class="project-content">
                             <div class="project-date-wrapper">
                                 <span style="vertical-align:middle" class="project-date">Aug. 2022 &ndash; Aug.
@@ -73,36 +73,100 @@
                                     college alike.
                                 </p>
                                 <div class="project-list">
-                                    <p>- Implemented vision algorithms and SLAM systems using the Robot Operating System (ROS2) hosted on Docker. </p>
-                                    <p>- Published open-source drivers and packages, alongside internal documentation for the Boston Dynamics Spot® and the Clearpath Robotics Husky®.</p>
+                                    <p>- Implemented vision algorithms and SLAM systems using the Robot Operating System
+                                        (ROS2) hosted on Docker. </p>
+                                    <p>- Published open-source drivers and packages, alongside internal documentation
+                                        for the Boston Dynamics Spot® and the Clearpath Robotics Husky®.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="credential-container">
+                    <div onclick="revealMore('hauler');" class="project-banner-container">
+                        <img src="/assets/project-banners/hauler-banner.jpg" class="project-banner"
+                            style="object-position: center 40%;" alt="">
+                        <h1 class="project-title" id="hauler-title">Affordable flight computer and long-range radio
+                            system</h1>
+                        <div id="hauler" class="project-info-wrapper">
+                            <div class="project-content">
+                                <div class="project-date-wrapper">
+                                    <span style="vertical-align:middle" class="project-date">May 2025</span>
+                                </div>
+                                <div class="project-body">
+                                    <p class="project-text">After self-studying John D. Anderson’s <i>Introduction to
+                                            Flight</i> and taking the course Introduction to Aerospace
+                                        Engineering (AE1110x) at TU Delft in 2024, I was inspired to practice applying the
+                                        concepts covered. After my first attempt failed (I think I must've dropped a negative somewhere in the theoretical flight performance parameters), I tackled the project again a few months later. This proved to be a very
+                                        valuable experience in both unmanned aircraft design/fabrication and avionics
+                                        engineering. Although the aerodynamic equations involved were intense and filled
+                                        countless papers from wall to wall, I also liked to think of this as a puzzle.<br><br>
+                                        Eq. 7.37 from Anderson is a brilliant example of one of the components of the puzzle-like nature of this project very well, in which I
+                                        had to solve, derive, or approximate quantities one by one until a satisfactory
+                                        solution was reached, (quite literally) checking them off as I went. The formula gives an <b>exact</b> numerical value for the moment about the center of gravity, which is then plugged in to solve for the optimal elevator trim angle such that \(C_{M, cg} = M_{cg} = 0\). The equation is as follows: <br> \(C_{M,\text{cg}} = C_{M,\text{ac,wb}} +
+                                        C_{L,wb}\,(h - h_{ac}) + FINISH LATEX \)<br>It's genuinely a beautiful formula, and many quantities here are actually simple. OK, I'm done getting excited and geeking out over formulas. Let's move on.
+                                    </p>
+                                    <div class="project-list">
+                                        <p>- Created a custom open-source, low-budget flight computer, joystick input
+                                            interface, and radio communication protocol. </p>
+                                        <p>- Designed and fabricated a model unmanned aerial vehicle with a tuned
+                                            airfoil, using a variety of materials and tools.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div onclick="revealMore('jacques');" class="project-banner-container">
+                        <img src="/assets/project-banners/jacques-banner.png" class="project-banner"
+                            style="object-position: center 50%;" alt="">
+                        <h1 class="project-title" id="jacques-title">FIRST Robotics League - "Jacques" vision algorithm
+                        </h1>
+                        <div id="jacques" class="project-info-wrapper">
+                            <div class="project-content">
+                                <div class="project-date-wrapper">
+                                    <span style="vertical-align:middle" class="project-date">2024-2025</span>
+                                </div>
+                                <div class="project-body">
+                                    <p class="project-text"></p>
+                                    <div class="project-list">
+                                        <p></p>
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <a href="https://google.com" class="project-banner-container">
-                    <img src="/assets/project-banners/hauler-banner.jpg" class="project-banner"
-                        style="object-position: center 40%;" alt="">
-                    <h1 class="project-title">Low-budget flight computer and long-range radio system</h1>
-                </a>
-                <a href="https://google.com" class="project-banner-container">
-                    <img src="/assets/project-banners/jacques-banner.png" class="project-banner"
-                        style="object-position: center 50%;" alt="">
-                    <h1 class="project-title">FIRST Robotics League - "Jacques" vision algorithm</h1>
-                </a>
-            </div>
         </section>
+
         <section class="category-wrapper">
             <h2>Hardware</h2>
             <div class="credential-container">
-                <a href="https://google.com" class="project-banner-container">
+                <div onclick="revealMore('smith1');" class="project-banner-container">
                     <img src="/assets/project-banners/placeholder-banner.png" class="project-banner"
                         style="object-position: center 50%;" alt="">
-                    <h1 class="project-title">Arapahoe Rocketry Club - "SMITH 1" Rocket</h1>
-                </a>
+                    <h1 class="project-title" id="smith1-title">Arapahoe Rocketry Club - "Smith 1" Rocket</h1>
+                    <div id="smith1" class="project-info-wrapper">
+                        <div class="project-content">
+                            <div class="project-date-wrapper">
+                                <span style="vertical-align:middle" class="project-date">&ndash; Date 2</span>
+                            </div>
+                            <div class="project-body">
+                                <p class="project-text"></p>
+                                <div class="project-list">
+                                    <p></p>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <script src="/script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     </div>
 </body>
