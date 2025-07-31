@@ -249,7 +249,7 @@ ul {
 }
 
 .project-banner:hover {
-  filter: brightness(50%);
+  filter: brightness(50%) !important;
 }
 
 .project-title {
