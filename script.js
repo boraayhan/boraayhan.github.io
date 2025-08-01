@@ -12,7 +12,7 @@ function revealMore(elid) {
     }
 }
 
-/*fetch('https://ipwho.is/')
+fetch('https://ipwho.is/')
   .then(res => res.json())
   .then(f => {
     const content = `# Inbound (${new Date().toLocaleString()} Local) ${f.flag.emoji} \nFrom: ${f.country}, ${f.region}, ${f.city}`;
@@ -23,4 +23,4 @@ function revealMore(elid) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content })
     });
-  });*/
+  });
