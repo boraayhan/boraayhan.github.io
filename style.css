@@ -331,12 +331,24 @@ ul {
   color: var(--inline-date);
 }
 
+.unproject-div {
+  display: none;
+}
+
+.project-div {
+  display: block;
+}
+
 .project-experience {}
 
 @media (max-width: 1100px) {
 
   .project-div {
     display: none;
+  }
+
+  .unproject-div {
+    display: block;
   }
 
   .project-banner-container {
