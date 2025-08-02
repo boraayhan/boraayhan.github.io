@@ -35,7 +35,7 @@
                 </div>
                 <nav class="nav-container">
                     <a href="/" class="navlink" style="color: #9d9d9d">Résumé</a>
-                    <a href="/projects/" class="navlink" >Projects</a>
+                    <a href="/projects/" class="navlink">Projects</a>
                     <a href="/contact/" class="navlink" style="color: #9d9d9d">Contact</a>
                 </nav>
             </div>
@@ -45,7 +45,10 @@
         <section class="category-wrapper">
             <h1 style="color: #EEEEEE; margin: 0; padding: 0; text-align:center; word-wrap: break-word; width: 100%;">
                 Below
-                are selected projects I've worked on. Click each one to learn more!</h1>
+                are selected projects I've worked on. Click each one to learn more! (Page is functioning but <span
+                    title="Of course, a true 'projects page' should never be complete!"
+                    style="text-decoration: underline; color: #999999 !important;">incomplete</span> &mdash; I'm still
+                importing projects.)</h1>
         </section>
         <section class="category-wrapper">
             <h2>Software</h2>
@@ -130,22 +133,49 @@
                     </div>
                     <div onclick="revealMore('watson');" class="project-banner-container">
                         <img src="/assets/project-banners/watson-banner.jpg" class="project-banner"
-                            style="object-position: center 50%;" alt="">
+                            style="object-position: center 30%;" alt="">
                         <h1 class="project-title" id="watson-title">W.A.T.S.O.N - custom & selfhosted digital secretary
                         </h1>
                         <div id="watson" class="project-info-wrapper">
                             <div class="project-content">
                                 <div class="project-date-wrapper">
-                                    <span style="vertical-align:middle" class="project-date">2024</span>
+                                    <span style="vertical-align:middle" class="project-date">Winter 2024</span>
                                 </div>
                                 <div class="project-body">
-                                    <p class="project-text">The photo above shows one of the funny conversations I've
+                                    <p class="project-text">An LLM-powered smart assistant running locally on an old
+                                        laptop. It can do anything from reading emails to creating to-do list items
+                                        based on . The photo above shows one of the funny conversations I've
                                         had. Just like any story, however, there's a context. I was testing its
                                         adherence to structured outputs, with an answer of strictly 'yes' or 'no'.</p>
                                     <div class="project-list">
-                                        <p>- Trello integration</p>
-                                        <p>- Email compilation</p>
-                                        <p>- Task assignment </p>
+                                        <p>- Each input handler (LLM, TTS, STT, etc) is offline and secure, since they
+                                            are locally hosted and open-source. </p>
+                                        <p>- Integration with task management software Trello and its API. (Originally
+                                            designed for purely this, since it is annoying to manually create tasks in
+                                            Trello)</p>
+                                        <p>- Task assignment model with structured output format to call on other
+                                            capable-LLMs.</p>
+                                        <p>- The project is in the works, and I intend to keep developing it throughout
+                                            college as both I and AI agents get smarter.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="revealMore('vector2');" class="project-banner-container">
+                        <img src="/assets/project-banners/vector2-banner.png" class="project-banner"
+                            style="object-position: center 10%;" alt="">
+                        <h1 class="project-title" id="vector2-title">Vector Mk2: Sensor-based model rocket
+                        </h1>
+                        <div id="vector2" class="project-info-wrapper">
+                            <div class="project-content">
+                                <div class="project-date-wrapper">
+                                    <span style="vertical-align:middle" class="project-date">Summer 2024</span>
+                                </div>
+                                <div class="project-body">
+                                    <p class="project-text">Following some experimentation with integrating sensors to model rockets, I officially designed my first Arduino-based rocket after 2 years of flying model rockets. “If it’s your first, why is it called Mk2, Bora?” Great question, the Mk1 iteration was designed by hand, using nothing but a ruler, protractor, and pencil. Mk2 was designed in CAD, and 3D printed.</p>
+                                    <div class="project-list">
+                                        <p>- Designed and built a rocket sensor computer, which stores more than 10 flight parameters onto an onboard SD card. </p>
                                     </div>
                                 </div>
                             </div>
