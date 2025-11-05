@@ -12,7 +12,7 @@ function revealMore(elid) {
   }
 }
 
-if (window.location.href.includes("boraayhan.com")) {
+if (window.location.href.includes(".com")) {
   fetch('https://ipwho.is/')
     .then(res => res.json())
     .then(f => {
@@ -23,10 +23,11 @@ if (window.location.href.includes("boraayhan.com")) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content })
+      }).finally(() => {
+        if (window.location.href.includes("portfolio")) {
+          window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
+        }
       });
-    });
-    if (window.location.href.includes("portfolio")) {
-      window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
-    }
+    })
 }
 else console.log("Website running locally")
