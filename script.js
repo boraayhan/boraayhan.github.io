@@ -25,5 +25,8 @@ if (window.location.href.includes("boraayhan.com")) {
         body: JSON.stringify({ content })
       });
     });
+    if (window.location.href.includes("portfolio")) {
+      window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
+    }
 }
 else console.log("Website running locally")
