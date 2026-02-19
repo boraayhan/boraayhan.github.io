@@ -12,20 +12,6 @@ function revealMore(elid) {
   }
 }
 
-if (window.location.href.includes(".com")) {
-  fetch('https://ipwho.is/')
-    .then(res => res.json())
-    .then(f => {
-      const content = `# Inbound (${new Date().toLocaleString()} Local) ${f.flag.emoji} to path: ${window.location.pathname} \nFrom: ${f.country}, ${f.region}, ${f.city}\nScreen size: ${screen.width}x${screen.height} px`;
-      fetch(atob('aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQwMDAwMDIzNDIyMTczMTkxMi9UTVlidXhLMW54RE1qRDZOUVU1S2tBUlg3T2ZLcW1IOG1VVTNXbmxJdlhwSmtBbE9HLWQ2UU94N09UYzVoMDliWDBQNg=='), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
-      }).finally(() => {
-        if (window.location.href.includes("portfolio")) {
-          window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
-        }
-      });
-    })
+if (window.location.href.includes("portfolio")) {
+  window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
 }
-else console.log("Website running locally")
