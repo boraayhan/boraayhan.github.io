@@ -13,5 +13,5 @@ function revealMore(elid) {
 }
 
 if (window.location.href.includes("portfolio")) {
-  window.location.replace("https://www.youtube.com/watch?v=taGMaZh1usw");
+  window.location.replace("https://boraayhan.github.io/portfolio.pdf");
 }
