@@ -1,0 +1,71 @@
+{
+  "sections": [
+    {
+      "label": null,
+      "entries": [
+        {
+          "title": "Simulation/Validation Engineer",
+          "org": "Longhorn Racing",
+          "href": "https://www.longhornracing.org/",
+          "logo": "/assets/icons/logos/LHR.png",
+          "logoLight": true,
+          "skills": ["Postgres", "QSS Lapsim", "Systems integration"]
+        },
+        {
+          "title": "Guidance, Navigation, Control (GNC) Lead",
+          "org": "Texas Aerial Robotics",
+          "href": "https://texasaerialrobotics.netlify.app/",
+          "logo": "/assets/icons/logos/TAR.jpg",
+          "logoLight": false,
+          "skills": ["ROS2", "Jetson"]
+        },
+        {
+          "title": "AI Segmentation Researcher",
+          "org": "Group for AI in Materials Modeling and Analysis (GAMMA) Lab",
+          "href": "https://zhantaochen.github.io/gamma-ut-austin/",
+          "logo": "/assets/icons/logos/GAMMA.png",
+          "logoLight": true,
+          "skills": ["SAM3", "SEM"]
+        },
+        {
+          "title": "Controls Researcher",
+          "org": "Texas Guadaloop",
+          "href": "https://txguadaloop.org",
+          "logo": "/assets/icons/logos/Guad.png",
+          "logoLight": true,
+          "skills": ["Controls", "Python"]
+        },
+        {
+          "title": "B.S. Mechanical Engineering, Minor in Robotics",
+          "org": "The University of Texas at Austin",
+          "href": "https://utexas.edu",
+          "logo": "/assets/icons/logos/UTAustin.svg",
+          "logoLight": true,
+          "education": true,
+          "skills": []
+        }
+      ]
+    },
+    {
+      "label": "Previously",
+      "entries": [
+        {
+          "title": "Software Intern",
+          "org": "Autonomy, Robotics, Intelligent Algorithms (ARIA) Lab",
+          "href": "https://www.ariarobotics.com/",
+          "logo": "/assets/icons/logos/ARIA.png",
+          "logoLight": false,
+          "skills": ["Python", "ROS"]
+        },
+        {
+          "title": "Software Lead",
+          "org": "FIRST Robotics Team 4293",
+          "href": "https://team4293.weebly.com/",
+          "logo": "/assets/icons/logos/FIRST.webp",
+          "logoLight": true,
+          "skills": ["Java", "Robotics"]
+        }
+      ]
+    }
+  ]
+}

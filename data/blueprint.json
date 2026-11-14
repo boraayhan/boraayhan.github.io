@@ -1,0 +1,64 @@
+{
+  "plates": [
+    {
+      "src": "/assets/blueprint/talon-architecture.png",
+      "top": "2vh",
+      "side": "right",
+      "offset": "-10vw",
+      "width": "26vw",
+      "drift": 40,
+      "tilt": 1,
+      "opacity": 0.03
+    },
+    {
+      "src": "/assets/blueprint/cad-iso.png",
+      "top": "22vh",
+      "side": "left",
+      "offset": "-8vw",
+      "width": "46vw",
+      "drift": -110,
+      "tilt": -3,
+      "opacity": 0.042
+    },
+    {
+      "src": "/assets/blueprint/cad-plan.png",
+      "top": "47vh",
+      "side": "right",
+      "offset": "-6vw",
+      "width": "34vw",
+      "drift": 90,
+      "tilt": 2,
+      "opacity": 0.042
+    },
+    {
+      "src": "/assets/blueprint/talon-architecture.png",
+      "top": "73vh",
+      "side": "left",
+      "offset": "-6vw",
+      "width": "30vw",
+      "drift": -70,
+      "tilt": 0,
+      "opacity": 0.033
+    },
+    {
+      "src": "/assets/blueprint/landing-plots.png",
+      "top": "98vh",
+      "side": "right",
+      "offset": "-2vw",
+      "width": "26vw",
+      "drift": 80,
+      "tilt": 1,
+      "opacity": 0.042
+    },
+    {
+      "src": "/assets/blueprint/cad-profile.png",
+      "top": "120vh",
+      "side": "left",
+      "offset": "4vw",
+      "width": "48vw",
+      "drift": -60,
+      "tilt": -1,
+      "opacity": 0.042
+    }
+  ]
+}

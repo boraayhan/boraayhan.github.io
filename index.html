@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bora Ayhan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/icons/pfp.jpg">
+    <link rel="icon" type="image/x-icon" href="/assets/icons/pfp.png">
     <link rel="stylesheet" href="/style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300..700&display=swap"
@@ -13,126 +13,88 @@
 </head>
 
 <body>
-    <section class="hero">
-        <div id="opening-bg" aria-label="Background video of Bora's engineering projects">
-            <video class="opening-bg-layer is-active" autoplay muted playsinline preload="auto"></video>
-            <video class="opening-bg-layer" muted playsinline preload="auto"></video>
-        </div>
-        <div class="hero-text">
-            <h1><span class="big-letter">B</span>ora <span class="big-letter">A</span>yhan</h1>
-            <h2>Engineer</h2>
-        </div>
-        <a class="scroll-arrow" href="#resume" aria-label="Scroll to résumé">&#8964;</a>
-    </section>
-    <header class="site-header" id="resume">
-        <img src="/assets/icons/pfp.jpg" alt="Bora Ayhan" class="pfp">
-        <div class="site-header-text">
-            <h1>Bora Ayhan</h1>
-            <h2>Engineer</h2>
-        </div>
-    </header>
-    <main class="content" id="content">
-        <ul class="bullets">
-            <li class="entry">
-                <a class="org-link" target="_blank" href="https://www.longhornracing.org/">
-                    <img class="org-icon org-icon-light" src="/assets/icons/logos/LHR.png" alt="Longhorn Racing logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">Simulation/Validation Engineer</span>
-                    <span class="entry-org">Longhorn Racing</span>
-                </div>
-            </li>
-            <li class="entry entry-with-attachments">
-                <a class="org-link" target="_blank" href="https://texasaerialrobotics.netlify.app/">
-                    <img class="org-icon" src="/assets/icons/logos/TAR.jpg" alt="Texas Aerial Robotics logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">Guidance, Navigation, Control (GNC) Lead</span>
-                    <span class="entry-org">Texas Aerial Robotics</span>
-                </div>
-            </li>
-            <li class="entry">
-                <a class="org-link" target="_blank" href="https://zhantaochen.github.io/gamma-ut-austin/">
-                    <img class="org-icon org-icon-light" src="/assets/icons/logos/GAMMA.png" alt="GAMMA Lab logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">AI Segmentation Researcher</span>
-                    <span class="entry-org">Group for AI in Materials Modeling and Analysis (GAMMA) Lab</span>
-                </div>
-            </li>
-            <li class="entry entry-with-attachments">
-                <a class="org-link" target="_blank" href="https://txguadaloop.org">
-                    <img class="org-icon org-icon-light" src="/assets/icons/logos/Guad.png" alt="Texas Guadaloop logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">Controls Researcher</span>
-                    <span class="entry-org">Texas Guadaloop</span>
-                </div>
-            </li>
-            <li class="entry education">
-                <a class="org-link" target="_blank" href="https://utexas.edu">
-                    <img class="org-icon org-icon-light" src="/assets/icons/logos/UTAustin.svg" alt="UT Austin logo">
-                </a>
-                <div class="entry-text" >
-                    <span class="entry-role">B.S. Mechanical Engineering, Minor in Robotics</span>
-                    <span class="entry-org">The University of Texas at Austin</span>
-                </div>
-            </li>
+    <div class="blueprint-grid" aria-hidden="true"></div>
+
+    <nav class="side-nav" aria-label="Primary">
+        <ul>
+            <li><a class="nav-link is-active" href="#home" data-panel="home">-- Home</a></li>
+            <li><a class="nav-link" href="#experience" data-panel="experience">-- Experience</a></li>
+            <li><a class="nav-link" href="#contact" data-panel="contact">-- Contact</a></li>
         </ul>
+    </nav>
 
-        <h3 class="bullets-label">Previously</h3>
-        <ul class="bullets">
-            <li class="entry entry-with-attachments">
-                <a class="org-link" target="_blank" href="https://www.ariarobotics.com/">
-                    <img class="org-icon" src="/assets/icons/logos/ARIA.png" alt="ARIA LAB logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">Software Intern</span>
-                    <span class="entry-org">Autonomy, Robotics, Intelligent Algorithms (ARIA) Lab</span>
-                </div>
-            </li>
-            <li class="entry entry-with-attachments">
-                <a class="org-link" target="_blank" href="https://team4293.weebly.com/">
-                    <img class="org-icon org-icon-light" src="/assets/icons/logos/FIRST.webp" alt="FIRST Robotics logo">
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">Software Lead</span>
-                    <span class="entry-org">FIRST Robotics Team 4293</span>
-                </div>
+    <main class="panels">
+        <div class="panel-track">
+        <section class="panel" id="panel-home" data-panel="home">
+            <div id="opening-bg" aria-label="Background video of Bora's engineering projects">
+                <video class="opening-bg-layer is-active" autoplay muted playsinline preload="auto"></video>
+                <video class="opening-bg-layer" muted playsinline preload="auto"></video>
+            </div>
+            <div class="home-text">
+                <h1><span class="big-letter">B</span>ora <span class="big-letter">A</span>yhan</h1>
+                <h2>Engineer</h2>
+            </div>
+        </section>
 
-            </li>
-        </ul>
-        <h1>Projects</h1>
-        <ul class="bullets">
-            <li class="entry entry-with-attachments">
-                <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
-                    <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-                        <path
-                            d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
-                    </svg> <!--We love vibecoded svg's!!!!!!!-->
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
-                    <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
+        <section class="panel" id="panel-experience" data-panel="experience">
+            <div class="panel-scroll">
+                <div class="experience-canvas">
+                <div class="blueprint" aria-hidden="true"></div>
+                <header class="site-header">
+                    <img src="/assets/icons/pfp.png" alt="Bora Ayhan" class="pfp">
+                    <div class="site-header-text">
+                        <h1>Bora Ayhan</h1>
+                        <h2>Engineer</h2>
+                    </div>
+                </header>
+                <div class="content" id="content">
+                    <div id="experience"></div>
+                    <h1>Projects</h1>
+                    <ul class="bullets">
+                        <li class="entry entry-with-attachments">
+                            <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
+                                <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                                    <path
+                                        d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
+                                </svg> <!--We love vibecoded svg's!!!!!!!-->
+                            </a>
+                            <div class="entry-text">
+                                <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
+                                <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
+                            </div>
+                            <div class="entry-attachments">
+                                <img class="attachment-placeholder" style="--ar: 1.3333" src="/assets/project-banners/hauler-banner.jpg" alt="Hauler cargo UAV" loading="lazy">
+                                <img class="attachment-placeholder" style="--ar: 4.4138" src="/assets/project-banners/vector2-banner.png" alt="Vector 2 airframe" loading="lazy">
+                            </div>
+                        </li>
+                        <li class="entry entry-with-attachments">
+                            <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
+                                <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                                    <path
+                                        d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
+                                </svg> <!--We love vibecoded svg's!!!!!!!-->
+                            </a>
+                            <div class="entry-text">
+                                <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
+                                <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
+                            </div>
+                            <div class="entry-attachments">
+                                <img class="attachment-placeholder" style="--ar: 4.4138" src="/assets/project-banners/consolidate-banner.png" alt="Consolidate telemetry tooling" loading="lazy">
+                                <img class="attachment-placeholder" style="--ar: 1.5" src="/assets/project-banners/aria-banner.jpeg" alt="ARIA rover" loading="lazy">
+                            </div>
+                        </li>
+                    </ul>
+                    <button>See full experience</button>
                 </div>
-
-            </li>
-            <li class="entry entry-with-attachments">
-                <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
-                    <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-                        <path
-                            d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
-                    </svg> <!--We love vibecoded svg's!!!!!!!-->
-                </a>
-                <div class="entry-text">
-                    <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
-                    <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
                 </div>
+            </div>
+        </section>
 
-            </li>
-        </ul>
-        <button>See full experience</button>
+        <section class="panel" id="panel-contact" data-panel="contact">
+        </section>
+        </div>
     </main>
+
     <script src="/script.js"></script>
 </body>
 
