@@ -1,64 +1,157 @@
 {
   "plates": [
     {
-      "src": "/assets/blueprint/talon-architecture.png",
-      "top": "2vh",
-      "side": "right",
-      "offset": "-10vw",
-      "width": "26vw",
-      "drift": 40,
-      "tilt": 1,
-      "opacity": 0.03
-    },
-    {
       "src": "/assets/blueprint/cad-iso.png",
-      "top": "22vh",
-      "side": "left",
-      "offset": "-8vw",
-      "width": "46vw",
+      "top": "38vh",
+      "left": "78%",
+      "width": "34vw",
       "drift": -110,
       "tilt": -3,
-      "opacity": 0.042
+      "opacity": 0.088
     },
     {
       "src": "/assets/blueprint/cad-plan.png",
-      "top": "47vh",
-      "side": "right",
-      "offset": "-6vw",
-      "width": "34vw",
+      "top": "74vh",
+      "left": "14%",
+      "width": "28vw",
       "drift": 90,
       "tilt": 2,
-      "opacity": 0.042
+      "opacity": 0.088
     },
     {
       "src": "/assets/blueprint/talon-architecture.png",
-      "top": "73vh",
-      "side": "left",
-      "offset": "-6vw",
-      "width": "30vw",
+      "top": "112vh",
+      "left": "68%",
+      "width": "26vw",
       "drift": -70,
       "tilt": 0,
-      "opacity": 0.033
+      "opacity": 0.069
     },
     {
       "src": "/assets/blueprint/landing-plots.png",
-      "top": "98vh",
-      "side": "right",
-      "offset": "-2vw",
-      "width": "26vw",
+      "top": "150vh",
+      "left": "30%",
+      "width": "32vw",
       "drift": 80,
       "tilt": 1,
-      "opacity": 0.042
+      "opacity": 0.088
     },
     {
       "src": "/assets/blueprint/cad-profile.png",
-      "top": "120vh",
-      "side": "left",
-      "offset": "4vw",
-      "width": "48vw",
-      "drift": -60,
+      "top": "20vh",
+      "left": "48%",
+      "width": "20vw",
+      "drift": 55,
+      "tilt": -2,
+      "opacity": 0.05
+    },
+    {
+      "src": "/assets/blueprint/cad-plan.png",
+      "top": "60vh",
+      "left": "92%",
+      "width": "22vw",
+      "drift": -45,
+      "tilt": 4,
+      "opacity": 0.06
+    },
+    {
+      "src": "/assets/blueprint/landing-plots.png",
+      "top": "96vh",
+      "left": "4%",
+      "width": "24vw",
+      "drift": 65,
       "tilt": -1,
-      "opacity": 0.042
+      "opacity": 0.06
+    },
+    {
+      "src": "/assets/blueprint/talon-architecture.png",
+      "top": "130vh",
+      "left": "44%",
+      "width": "18vw",
+      "drift": -85,
+      "tilt": 3,
+      "opacity": 0.05
+    },
+    {
+      "src": "/assets/blueprint/cad-profile.png",
+      "top": "4vh",
+      "left": "8%",
+      "width": "16vw",
+      "drift": 40,
+      "tilt": -1,
+      "opacity": 0.055
+    },
+    {
+      "src": "/assets/blueprint/cad-iso.png",
+      "top": "92vh",
+      "left": "58%",
+      "width": "20vw",
+      "drift": -60,
+      "tilt": 2,
+      "opacity": 0.06
+    },
+    {
+      "src": "/assets/blueprint/landing-plots.png",
+      "top": "140vh",
+      "left": "82%",
+      "width": "22vw",
+      "drift": 50,
+      "tilt": -2,
+      "opacity": 0.07
+    },
+    {
+      "src": "/assets/blueprint/cad-plan.png",
+      "top": "168vh",
+      "left": "20%",
+      "width": "30vw",
+      "drift": -80,
+      "tilt": 2,
+      "opacity": 0.085
+    },
+    {
+      "src": "/assets/blueprint/talon-architecture.png",
+      "top": "186vh",
+      "left": "74%",
+      "width": "26vw",
+      "drift": 65,
+      "tilt": -1,
+      "opacity": 0.07
+    },
+    {
+      "src": "/assets/blueprint/cad-profile.png",
+      "top": "208vh",
+      "left": "8%",
+      "width": "24vw",
+      "drift": 90,
+      "tilt": -3,
+      "opacity": 0.065
+    },
+    {
+      "src": "/assets/blueprint/cad-iso.png",
+      "top": "224vh",
+      "left": "50%",
+      "width": "32vw",
+      "drift": -70,
+      "tilt": 1,
+      "opacity": 0.088
+    },
+    {
+      "src": "/assets/blueprint/landing-plots.png",
+      "top": "246vh",
+      "left": "86%",
+      "width": "24vw",
+      "drift": 55,
+      "tilt": 2,
+      "opacity": 0.07
+    },
+    {
+      "src": "/assets/blueprint/cad-plan.png",
+      "top": "262vh",
+      "left": "26%",
+      "width": "20vw",
+      "drift": -50,
+      "tilt": -2,
+      "opacity": 0.055
     }
   ]
 }

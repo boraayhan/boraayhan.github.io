@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bora Ayhan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/icons/pfp.png">
+    <script>
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    </script>
+    <link rel="icon" type="image/x-icon" href="/assets/icons/headshot.png">
     <link rel="stylesheet" href="/style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300..700&display=swap"
@@ -13,13 +16,11 @@
 </head>
 
 <body>
-    <div class="blueprint-grid" aria-hidden="true"></div>
-
     <nav class="side-nav" aria-label="Primary">
         <ul>
-            <li><a class="nav-link is-active" href="#home" data-panel="home">-- Home</a></li>
-            <li><a class="nav-link" href="#experience" data-panel="experience">-- Experience</a></li>
-            <li><a class="nav-link" href="#contact" data-panel="contact">-- Contact</a></li>
+            <li><a class="nav-link is-active" href="#home" data-panel="home" aria-current="page">Home</a></li>
+            <li><a class="nav-link" href="#experience" data-panel="experience">Experience</a></li>
+            <li><a class="nav-link" href="#projects" data-panel="projects">Projects</a></li>
         </ul>
     </nav>
 
@@ -31,24 +32,48 @@
                 <video class="opening-bg-layer" muted playsinline preload="auto"></video>
             </div>
             <div class="home-text">
-                <h1><span class="big-letter">B</span>ora <span class="big-letter">A</span>yhan</h1>
-                <h2>Engineer</h2>
+                <h1><span class="big-letter">B</span>ora<br><span class="big-letter">A</span>yhan</h1>
             </div>
         </section>
 
         <section class="panel" id="panel-experience" data-panel="experience">
             <div class="panel-scroll">
                 <div class="experience-canvas">
+                <div class="blueprint-grid" aria-hidden="true"></div>
                 <div class="blueprint" aria-hidden="true"></div>
                 <header class="site-header">
-                    <img src="/assets/icons/pfp.png" alt="Bora Ayhan" class="pfp">
+                    <img src="/assets/icons/headshot.png" alt="Bora Ayhan" class="pfp">
                     <div class="site-header-text">
                         <h1>Bora Ayhan</h1>
                         <h2>Engineer</h2>
+                        <nav class="mobile-contacts" aria-label="Contact and résumé">
+                            <a href="https://www.linkedin.com/in/bora-ayhan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" title="LinkedIn">
+                                <img src="/assets/icons/linkedin.webp" alt="">
+                            </a>
+                            <a class="contact-github" href="https://github.com/boraayhan" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" title="GitHub">
+                                <img src="/assets/icons/github.png" alt="">
+                            </a>
+                            <a class="contact-resume" href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open résumé PDF" title="Résumé PDF">
+                                <img src="/assets/icons/resume.jpg" alt="">
+                                <span>PDF</span>
+                            </a>
+                        </nav>
                     </div>
                 </header>
                 <div class="content" id="content">
                     <div id="experience"></div>
+                    <button class="experience-toggle experience-toggle-bottom" type="button" aria-expanded="false" aria-controls="experience">See details</button>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" id="panel-projects" data-panel="projects">
+            <div class="panel-scroll">
+                <div class="experience-canvas">
+                <div class="blueprint-grid" aria-hidden="true"></div>
+                <div class="blueprint" aria-hidden="true"></div>
+                <div class="content">
                     <h1>Projects</h1>
                     <ul class="bullets">
                         <li class="entry entry-with-attachments">
@@ -84,13 +109,9 @@
                             </div>
                         </li>
                     </ul>
-                    <button>See full experience</button>
                 </div>
                 </div>
             </div>
-        </section>
-
-        <section class="panel" id="panel-contact" data-panel="contact">
         </section>
         </div>
     </main>
