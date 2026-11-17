@@ -1,5 +1,5 @@
 # Organization logos
 
-Active logos use lowercase kebab-case filenames and are referenced in `data/experience.json`.
-`sources/` preserves original and retired artwork. Display SVGs embed their images.
-Mines HSPC uses `logoLight: true` for its white background.
+All logos here are referenced in `data/experience.json`. Display SVGs embed their
+artwork. Use `logoLight` for a white tile background and `logoContentWidth` with
+`logoScale` to align artwork containing internal whitespace.

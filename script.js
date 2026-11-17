@@ -1,16 +1,41 @@
-if (window.location.href.includes('portfolio')) {
-  window.location.replace('https://boraayhan.github.io/assets/portfolio.pdf');
-}
-
 const COVER_VIDEOS = [
-  // Video title, Speed (1 = default, 0.5 = half speed)
+  // [filename, speed, optional fixed position]
+  // Omit the position (or use null) to shuffle. 0 = first, 1 = second,
+  // -1 = last, -2 = second-last. Positions apply to every playback cycle.
   ['tar_drone_flight.mov', 1.3],
   ['shooting_targeting_algorithm.MOV', 1],
   ['grace_lidar.mp4', 1.5],
   ['flight_controls_demo.mov', 1],
-  ['ARIA_goofing_off.MOV', 1],
+  ['ARIA_goofing_off.MOV', 1, -1],
   ['uav_cad.mp4', 1],
 ];
+
+// Pin explicitly positioned videos, then shuffle the remaining slots.
+const orderCoverVideos = (videos, random = Math.random) => {
+  const ordered = new Array(videos.length).fill(null);
+  const unpinned = [];
+  for (const video of videos) {
+    const position = video[2];
+    if (position == null) {
+      unpinned.push(video);
+      continue;
+    }
+    if (!Number.isInteger(position))
+      throw new Error(`Video position must be an integer: ${video[0]}`);
+    const slot = position < 0 ? videos.length + position : position;
+    if (slot < 0 || slot >= videos.length)
+      throw new Error(`Video position is out of range: ${video[0]} (${position})`);
+    if (ordered[slot] !== null)
+      throw new Error(`Videos share fixed position ${slot}: ${ordered[slot][0]}, ${video[0]}`);
+    ordered[slot] = video;
+  }
+  for (let i = unpinned.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [unpinned[i], unpinned[j]] = [unpinned[j], unpinned[i]];
+  }
+  let next = 0;
+  return ordered.map((video) => video ?? unpinned[next++]);
+};
 
 const COVER_VIDEO_DIR = '/assets/cover_video/';
 
@@ -18,8 +43,18 @@ const layers =
     Array.from(document.querySelectorAll('#opening-bg .opening-bg-layer'));
 
 if (layers.length === 2 && COVER_VIDEOS.length > 0) {
-  const clip = (i) => COVER_VIDEOS[i % COVER_VIDEOS.length];
   let index = 0;
+  const orders = new Map();
+  const clip = (i) => {
+    const cycle = Math.floor(i / COVER_VIDEOS.length);
+    if (!orders.has(cycle)) orders.set(cycle, orderCoverVideos(COVER_VIDEOS));
+    // Keep preloaded clips stable, and discard completed cycles.
+    const currentCycle = Math.floor(index / COVER_VIDEOS.length);
+    for (const cachedCycle of orders.keys()) {
+      if (cachedCycle < currentCycle) orders.delete(cachedCycle);
+    }
+    return orders.get(cycle)[i % COVER_VIDEOS.length];
+  };
   let failures = 0;
   let heroVisible = false;
   let current = layers[0];
@@ -28,13 +63,14 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
   const prime = (video, i) => {
     const [file, rate] = clip(i);
     video.dataset.rate = rate;
+    video.dataset.playlistIndex = i;
     video.src = COVER_VIDEO_DIR + file;
     video.playbackRate = rate;
     video.load();
   };
 
   const advance = () => {
-    index += 1;
+    index = Number(next.dataset.playlistIndex);
 
     const incoming = next;
     const outgoing = current;
@@ -68,7 +104,7 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
       if (video === current)
         advance();
       else
-        prime(video, index + 2);
+        prime(video, Number(video.dataset.playlistIndex) + 1);
     });
   });
 
@@ -82,50 +118,31 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
   new IntersectionObserver(([entry]) => {
     heroVisible = entry.isIntersecting;
     syncPlayback();
-  }).observe(document.getElementById('panel-home'));
+  }).observe(document.getElementById('home'));
   document.addEventListener('visibilitychange', syncPlayback);
-  layers.forEach((video) => {
-    video.removeAttribute('autoplay');
-    video.preload = 'metadata';
-  });
   prime(current, 0);
   prime(next, 1);
 }
 
 const EXPERIENCE_DATA = '/data/experience.json';
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-const experienceMount = document.getElementById('experience');
+const experienceMount = document.getElementById('experience-list');
 
 const buildOrgIcon = (entry) => {
-  if (entry.logo) {
-    const logo = document.createElement('img');
-    logo.className = entry.logoLight ? 'org-icon org-icon-light' : 'org-icon';
-    if (entry.logoCover) logo.classList.add('org-icon-cover');
-    if (entry.logoContentWidth != null) {
-      const tile = document.createElement('span');
-      tile.className = 'org-icon org-icon-scaled';
-      logo.className = 'org-icon-artwork';
-      logo.style.transform =
-          `scale(${entry.logoScale / entry.logoContentWidth})`;
-      logo.src = entry.logo;
-      logo.alt = (entry.org || entry.title || '') + ' logo';
-      tile.appendChild(logo);
-      return tile;
-    }
-    if (entry.logoScale != null) {
-      logo.style.padding =
-          `calc(56px * var(--bullet-scale) * ${(1 - entry.logoScale) / 2})`;
-    }
-    logo.src = entry.logo;
-    logo.alt = (entry.org || entry.title || '') + ' logo';
-    return logo;
+  const logo = document.createElement('img');
+  logo.src = entry.logo;
+  logo.alt = (entry.org || entry.title) + ' logo';
+  if (entry.logoContentWidth != null) {
+    const tile = document.createElement('span');
+    tile.className = 'org-icon org-icon-scaled';
+    logo.className = 'org-icon-artwork';
+    logo.style.transform = `scale(${entry.logoScale / entry.logoContentWidth})`;
+    tile.appendChild(logo);
+    return tile;
   }
-
-  const mark = document.createElement('span');
-  mark.className = 'org-icon org-icon-mono';
-  mark.textContent = entry.monogram || (entry.title || '?').slice(0, 2);
-  mark.setAttribute('aria-hidden', 'true');
-  return mark;
+  logo.className = entry.logoLight ? 'org-icon org-icon-light' : 'org-icon';
+  return logo;
 };
 
 const buildEntry = (entry) => {
@@ -137,15 +154,12 @@ const buildEntry = (entry) => {
   }
   if (entry.education) li.classList.add('education');
 
-  const hasLink = Boolean(entry.href);
-  const link = document.createElement(hasLink ? 'a' : 'span');
-  link.className = hasLink ? 'org-link' : 'org-link org-link-static';
-  if (hasLink) {
-    link.target = '_blank';
-    link.rel = 'noopener';
-    link.href = entry.href;
-    link.setAttribute('aria-label', entry.org || entry.title || '');
-  }
+  const link = document.createElement('a');
+  link.className = 'org-link';
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.href = entry.href;
+  link.setAttribute('aria-label', entry.org || entry.title);
   link.appendChild(buildOrgIcon(entry));
 
   const text = document.createElement('div');
@@ -349,12 +363,9 @@ const openEntryDetails = async (details, delay) => {
   await wait(SLIDE_DURATION);
   if (!isCurrent(details, token)) return;
 
-  details.classList.add('is-typing');
   for (const span of details.querySelectorAll('.typewriter')) {
     if (!await typeText(details, span, token)) return;
   }
-  details.classList.remove('is-typing');
-  recalcLayout();
 };
 
 const closeEntryDetails = async (details, delay) => {
@@ -366,48 +377,30 @@ const closeEntryDetails = async (details, delay) => {
   if (!isCurrent(details, token)) return;
 
   if (reducedMotion.matches) {
-    details.classList.remove('is-open', 'is-typing');
+    details.classList.remove('is-open');
     details.style.maxHeight = '';
     details.querySelectorAll('.typewriter')
         .forEach((span) => (span.textContent = ''));
     return;
   }
 
-  details.classList.add('is-typing');
   const spans = Array.from(details.querySelectorAll('.typewriter')).reverse();
   for (const span of spans) {
     if (!await untypeText(details, span, token)) return;
   }
-  details.classList.remove('is-typing');
 
   details.classList.remove('is-open');
   details.style.maxHeight = '';
-  recalcLayout();
 };
 
-const fullExperienceButtons = document.querySelectorAll('.experience-toggle');
+const experienceToggle = document.querySelector('.experience-toggle');
 let experienceExpanded = false;
-let experienceToggleVersion = 0;
 
-const scrollExperienceToTop = () => {
-  document.getElementById('panel-experience')?.scrollIntoView({
-    behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start'
-  });
-  return Promise.resolve();
-};
-
-if (experienceMount) {
-  const toggleExperience = async () => {
-    const version = ++experienceToggleVersion;
+if (experienceMount && experienceToggle) {
+  const toggleExperience = () => {
     experienceExpanded = !experienceExpanded;
-    fullExperienceButtons.forEach((button) => {
-      button.setAttribute('aria-expanded', String(experienceExpanded));
-      button.textContent = experienceExpanded ? 'Hide details' : 'See details';
-    });
-    if (experienceExpanded) {
-      await scrollExperienceToTop();
-      if (version !== experienceToggleVersion) return;
-    }
+    experienceToggle.setAttribute('aria-expanded', String(experienceExpanded));
+    experienceToggle.textContent = experienceExpanded ? 'Hide details' : 'See details';
 
     experienceMount.querySelectorAll('[data-full-only], .entry-timing')
         .forEach((element) => { element.hidden = !experienceExpanded; });
@@ -423,9 +416,7 @@ if (experienceMount) {
         closeEntryDetails(details, delay);
     });
   };
-  fullExperienceButtons.forEach((button) => {
-    button.addEventListener('click', toggleExperience);
-  });
+  experienceToggle.addEventListener('click', toggleExperience);
 }
 
 if (experienceMount) {
@@ -477,132 +468,11 @@ if (experienceMount) {
           experienceMount.querySelectorAll('.entry-details')
               .forEach((details) => openEntryDetails(details, 0));
         }
-        recalcLayout();
       })
       .catch((error) => {
         console.error('could not load experience data:', error);
       });
 }
-
-const BLUEPRINT_DATA = '/data/blueprint.json';
-
-const blueprint = document.querySelector('.blueprint');
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-// Layout changes invalidate cached section boundaries; scrolling only reads scrollY.
-const recalcLayout = () => invalidatePageGeometry();
-
-const mountPlates = (plates) => {
-  const fragment = document.createDocumentFragment();
-
-  plates.forEach((plate) => {
-    if (!plate || !plate.src) return;
-
-    const img = document.createElement('img');
-    img.className = 'blueprint-plate';
-    img.src = plate.src;
-    img.alt = '';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-
-    img.style.setProperty('--top', plate.top || '100vh');
-    img.style.setProperty('--w', plate.width || '30vw');
-    img.style.setProperty('--tilt', (plate.tilt || 0) + 'deg');
-    if (plate.opacity != null)
-      img.style.setProperty('--plate-opacity', plate.opacity);
-    img.style.setProperty('--plate-left', plate.left || '50%');
-
-    fragment.appendChild(img);
-  });
-
-  blueprint.replaceChildren(fragment);
-};
-
-if (blueprint) {
-  fetch(BLUEPRINT_DATA)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(response.status + ' ' + response.statusText);
-        return response.json();
-      })
-      .then((data) => {
-        mountPlates(data.plates || []);
-        recalcLayout();
-      })
-      .catch((error) => {
-        console.error('could not load blueprint data:', error);
-      });
-}
-
-const navLinks = Array.from(document.querySelectorAll('.nav-link[data-panel]'));
-const panels = Array.from(document.querySelectorAll('.panel[data-panel]'));
-// Use the actual scrolling element and tolerate fractional pixels at the bottom.
-const sectionScrollProgress = (position, start, end, atBottom = false) =>
-    atBottom ? 1 : end > start ?
-    Math.max(0, Math.min(1, (position - start) / (end - start))) : Number(position >= end);
-
-const navigationItems = navLinks.map((link) => ({
-  link, panel: panels.find((panel) => panel.dataset.panel === link.dataset.panel),
-  progress: '', active: null
-}));
-let pageGeometryDirty = true;
-let pageMaximum = 0;
-let sectionStarts = [];
-let navigationFramePending = false;
-const updateNavigation = () => {
-  const scrollElement = document.scrollingElement || document.documentElement;
-  const position = scrollElement.scrollTop;
-  // Complete every layout read before writing any styles.
-  if (pageGeometryDirty) {
-    pageMaximum = Math.max(0, scrollElement.scrollHeight - scrollElement.clientHeight);
-    sectionStarts = navigationItems.map(({panel}) => Math.max(0,
-        Math.min(pageMaximum, panel.getBoundingClientRect().top + position)));
-    pageGeometryDirty = false;
-  }
-  const atBottom = pageMaximum <= 0 || position >= pageMaximum - 1;
-  const activeIndex = atBottom ? navigationItems.length - 1 :
-      sectionStarts.reduce((active, start, index) => position >= start ? index : active, 0);
-  navigationItems.forEach((item, index) => {
-    const progress = sectionScrollProgress(position, sectionStarts[index],
-        sectionStarts[index + 1] ?? pageMaximum, atBottom).toFixed(4);
-    if (progress !== item.progress) {
-      item.link.style.setProperty('--section-progress', progress);
-      item.progress = progress;
-    }
-    const active = index === activeIndex;
-    if (active !== item.active) {
-      item.link.classList.toggle('is-active', active);
-      if (active) item.link.setAttribute('aria-current', 'location');
-      else item.link.removeAttribute('aria-current');
-      item.active = active;
-    }
-  });
-};
-const scheduleNavigation = () => {
-  if (navigationFramePending) return;
-  navigationFramePending = true;
-  requestAnimationFrame(() => {
-    navigationFramePending = false;
-    updateNavigation();
-  });
-};
-const invalidatePageGeometry = () => {
-  pageGeometryDirty = true;
-  scheduleNavigation();
-};
-window.addEventListener('scroll', scheduleNavigation, {passive: true});
-window.addEventListener('resize', invalidatePageGeometry, {passive: true});
-window.addEventListener('load', invalidatePageGeometry);
-document.addEventListener('load', invalidatePageGeometry, true);
-document.fonts.ready.then(invalidatePageGeometry);
-const navigationObserver = new ResizeObserver(invalidatePageGeometry);
-panels.forEach((panel) => navigationObserver.observe(panel));
-navigationObserver.observe(document.body);
-navLinks.forEach((link) => { link.href = `#panel-${link.dataset.panel}`; });
-window.addEventListener('pageshow', () => {
-  if (!window.location.hash) window.scrollTo({top: 0, behavior: 'instant'});
-  invalidatePageGeometry();
-});
-scheduleNavigation();
 
 // Use a native modal above the page content.
 const imageViewer = document.createElement('dialog');
@@ -622,7 +492,7 @@ imageViewer.addEventListener('click', (event) => {
 });
 imageViewer.addEventListener('close', () => previewImage.removeAttribute('src'));
 
-document.querySelectorAll('.entry-attachments img, img.pfp').forEach((image) => {
+document.querySelectorAll('.project-images img, img.pfp').forEach((image) => {
   image.classList.add('image-preview-trigger');
   image.tabIndex = 0;
   image.setAttribute('role', 'button');
@@ -641,162 +511,3 @@ document.querySelectorAll('.entry-attachments img, img.pfp').forEach((image) => 
     }
   });
 });
-
-const GRADIENT_DEBUG_CONTROLS = [
-  {
-    group: 'Grid',
-    label: 'Base opacity',
-    prop: '--bp-base',
-    min: 0,
-    max: 1,
-    step: 0.01,
-    value: 0.8
-  },
-  {
-    group: 'Grid',
-    label: 'Linear fade start %',
-    prop: '--bp-lin-start',
-    min: 0,
-    max: 100,
-    step: 1,
-    value: 0,
-    unit: '%'
-  },
-  {
-    group: 'Grid',
-    label: 'Linear fade end %',
-    prop: '--bp-lin-end',
-    min: 0,
-    max: 100,
-    step: 1,
-    value: 100,
-    unit: '%'
-  },
-  {
-    group: 'Grid',
-    label: 'Radial width %',
-    prop: '--bp-rad-x',
-    min: 10,
-    max: 150,
-    step: 1,
-    value: 150,
-    unit: '%'
-  },
-  {
-    group: 'Grid',
-    label: 'Radial height %',
-    prop: '--bp-rad-y',
-    min: 10,
-    max: 150,
-    step: 1,
-    value: 150,
-    unit: '%'
-  },
-  {
-    group: 'Grid',
-    label: 'Radial inner %',
-    prop: '--bp-rad-inner',
-    min: 0,
-    max: 100,
-    step: 1,
-    value: 0,
-    unit: '%'
-  },
-  {
-    group: 'Grid',
-    label: 'Radial outer %',
-    prop: '--bp-rad-outer',
-    min: 0,
-    max: 150,
-    step: 1,
-    value: 0,
-    unit: '%'
-  },
-  {
-    group: 'SVG plates',
-    label: 'Base opacity',
-    prop: '--svg-base',
-    min: 0,
-    max: 1,
-    step: 0.01,
-    value: 0.3
-  },
-  {
-    group: 'SVG plates',
-    label: 'Overall multiplier',
-    prop: '--svg-mult',
-    min: 0,
-    max: 3,
-    step: 0.05,
-    value: 1
-  },
-];
-
-if (window.location.search.includes('debug')) {
-  const panel = document.createElement('div');
-  panel.style.cssText = [
-    'position:fixed',
-    'bottom:1rem',
-    'right:1rem',
-    'z-index:9999',
-    'background:rgba(16,20,24,0.92)',
-    'border:1px solid rgba(238,238,238,0.2)',
-    'border-radius:8px',
-    'padding:0.75rem 1rem',
-    'font:12px/1.4 monospace',
-    'color:#EEEEEE',
-    'max-height:80vh',
-    'overflow-y:auto',
-    'width:260px',
-  ].join(';');
-
-  const title = document.createElement('div');
-  title.textContent = 'Gradient debug';
-  title.style.cssText = 'font-weight:bold;margin-bottom:0.5rem;cursor:pointer;';
-  panel.appendChild(title);
-
-  const body = document.createElement('div');
-  panel.appendChild(body);
-  title.addEventListener('click', () => {
-    body.style.display = body.style.display === 'none' ? '' : 'none';
-  });
-
-  let currentGroup = null;
-  GRADIENT_DEBUG_CONTROLS.forEach((control) => {
-    if (control.group !== currentGroup) {
-      currentGroup = control.group;
-      const heading = document.createElement('div');
-      heading.textContent = control.group;
-      heading.style.cssText = 'margin:0.5rem 0 0.25rem;color:#f4a968;';
-      body.appendChild(heading);
-    }
-
-    const row = document.createElement('label');
-    row.style.cssText = 'display:block;margin-bottom:0.4rem;';
-
-    const text = document.createElement('div');
-    const valueSpan = document.createElement('span');
-    valueSpan.textContent = control.value;
-    text.textContent = control.label + ': ';
-    text.appendChild(valueSpan);
-    row.appendChild(text);
-
-    const input = document.createElement('input');
-    input.type = 'range';
-    input.min = control.min;
-    input.max = control.max;
-    input.step = control.step;
-    input.value = control.value;
-    input.style.width = '100%';
-    input.addEventListener('input', () => {
-      valueSpan.textContent = input.value + (control.unit || '');
-      document.documentElement.style.setProperty(
-          control.prop, input.value + (control.unit || ''));
-    });
-    row.appendChild(input);
-
-    body.appendChild(row);
-  });
-
-  document.body.appendChild(panel);
-}
