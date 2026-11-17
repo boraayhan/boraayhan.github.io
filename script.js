@@ -21,6 +21,7 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
   const clip = (i) => COVER_VIDEOS[i % COVER_VIDEOS.length];
   let index = 0;
   let failures = 0;
+  let heroVisible = false;
   let current = layers[0];
   let next = layers[1];
 
@@ -40,7 +41,7 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
 
     incoming.playbackRate = Number(incoming.dataset.rate);
     incoming.currentTime = 0;
-    incoming.play().catch(() => {});
+    if (heroVisible && !document.hidden) incoming.play().catch(() => {});
 
     incoming.classList.add('is-active');
     outgoing.classList.remove('is-active');
@@ -48,6 +49,7 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
     current = incoming;
     next = outgoing;
 
+    outgoing.pause();
     prime(outgoing, index + 1);
   };
 
@@ -70,8 +72,23 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
     });
   });
 
+  const syncPlayback = () => {
+    layers.forEach((video) => {
+      if (video === current && heroVisible && !document.hidden)
+        video.play().catch(() => {});
+      else video.pause();
+    });
+  };
+  new IntersectionObserver(([entry]) => {
+    heroVisible = entry.isIntersecting;
+    syncPlayback();
+  }).observe(document.getElementById('panel-home'));
+  document.addEventListener('visibilitychange', syncPlayback);
+  layers.forEach((video) => {
+    video.removeAttribute('autoplay');
+    video.preload = 'metadata';
+  });
   prime(current, 0);
-  current.play().catch(() => {});
   prime(next, 1);
 }
 
@@ -186,7 +203,12 @@ const buildEntry = (entry) => {
         const span = document.createElement('span');
         span.className = 'typewriter';
         span.dataset.text = line;
-        item.appendChild(span);
+        // Reserve the final line wrapping so typing never changes page height.
+        const reserved = document.createElement('span');
+        reserved.className = 'typewriter-reserved';
+        reserved.setAttribute('aria-hidden', 'true');
+        reserved.textContent = line;
+        item.append(reserved, span);
         list.appendChild(item);
       });
       inner.appendChild(list);
@@ -221,25 +243,87 @@ const runTokens = new WeakMap();
 
 const isCurrent = (details, token) => runTokens.get(details) === token;
 
-const typeText = async (details, span, token) => {
-  const text = span.dataset.text || '';
-  for (let i = 1; i <= text.length; i++) {
-    if (!isCurrent(details, token)) return false;
-    span.textContent = text.slice(0, i);
-    await wait(TYPE_SPEED);
+// IntersectionObserver wakes paused writers; there are no offscreen polling timers.
+const visibleTypewriters = new WeakSet();
+const textJobs = new Map();
+let textFrame = 0;
+const typewriterObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) visibleTypewriters.add(entry.target);
+    else {
+      visibleTypewriters.delete(entry.target);
+      for (const job of textJobs.values()) {
+        if (job.span.parentElement !== entry.target) continue;
+        job.last = null;
+        job.span.classList.remove('is-typing');
+      }
+    }
   }
-  return true;
+  scheduleTextFrame();
+});
+
+const scheduleTextFrame = () => {
+  if (textFrame || document.hidden) return;
+  const runnable = [...textJobs.values()].some((job) =>
+      job.erasing || visibleTypewriters.has(job.span.parentElement));
+  if (runnable) textFrame = requestAnimationFrame(advanceText);
 };
 
-const untypeText = async (details, span, token) => {
-  const text = span.textContent;
-  for (let i = text.length; i >= 0; i--) {
-    if (!isCurrent(details, token)) return false;
-    span.textContent = text.slice(0, i);
-    await wait(UNTYPE_SPEED);
+const advanceText = (now) => {
+  textFrame = 0;
+  for (const [span, job] of textJobs) {
+    if (!isCurrent(job.details, job.token)) {
+      textJobs.delete(span);
+      job.resolve(false);
+      continue;
+    }
+    if (!job.erasing && !visibleTypewriters.has(span.parentElement)) {
+      job.last = null;
+      span.classList.remove('is-typing');
+      continue;
+    }
+    span.classList.add('is-typing');
+    const elapsed = job.last == null ? 0 : now - job.last;
+    const count = Math.max(1, Math.floor(elapsed / job.speed));
+    if (job.last != null && elapsed < job.speed) continue;
+    job.last = now;
+    job.length = job.erasing ? Math.max(0, job.length - count) :
+        Math.min(job.text.length, job.length + count);
+    span.textContent = job.text.slice(0, job.length);
+    if (job.length === (job.erasing ? 0 : job.text.length)) {
+      textJobs.delete(span);
+      span.classList.remove('is-typing');
+      job.resolve(true);
+    }
   }
-  return true;
+  scheduleTextFrame();
 };
+
+const animateText = (details, span, token, erasing) => new Promise((resolve) => {
+  textJobs.set(span, {details, span, token, erasing, resolve,
+    text: erasing ? span.textContent : span.dataset.text || '',
+    length: span.textContent.length, last: null,
+    speed: erasing ? UNTYPE_SPEED : TYPE_SPEED});
+  scheduleTextFrame();
+});
+const typeText = (details, span, token) => animateText(details, span, token, false);
+const untypeText = (details, span, token) => animateText(details, span, token, true);
+
+const cancelTextJobs = (details) => {
+  for (const [span, job] of textJobs) {
+    if (job.details !== details) continue;
+    textJobs.delete(span);
+    span.classList.remove('is-typing');
+    job.resolve(false);
+  }
+};
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    cancelAnimationFrame(textFrame);
+    textFrame = 0;
+    textJobs.forEach((job) => { job.last = null; });
+  } else scheduleTextFrame();
+});
 
 const measure = (details) =>
     details.firstElementChild ? details.firstElementChild.scrollHeight : 0;
@@ -247,6 +331,7 @@ const measure = (details) =>
 const openEntryDetails = async (details, delay) => {
   const token = Symbol('open');
   runTokens.set(details, token);
+  cancelTextJobs(details);
 
   if (delay) await wait(delay);
   if (!isCurrent(details, token)) return;
@@ -267,7 +352,6 @@ const openEntryDetails = async (details, delay) => {
   details.classList.add('is-typing');
   for (const span of details.querySelectorAll('.typewriter')) {
     if (!await typeText(details, span, token)) return;
-    details.style.maxHeight = measure(details) + 'px';
   }
   details.classList.remove('is-typing');
   recalcLayout();
@@ -276,6 +360,7 @@ const openEntryDetails = async (details, delay) => {
 const closeEntryDetails = async (details, delay) => {
   const token = Symbol('close');
   runTokens.set(details, token);
+  cancelTextJobs(details);
 
   if (delay) await wait(delay);
   if (!isCurrent(details, token)) return;
@@ -305,31 +390,10 @@ let experienceExpanded = false;
 let experienceToggleVersion = 0;
 
 const scrollExperienceToTop = () => {
-  const scroller = document.querySelector('#panel-experience .panel-scroll');
-  if (!scroller || scroller.scrollTop <= 1) return Promise.resolve();
-  if (reducedMotion.matches) {
-    scroller.scrollTo({top: 0, behavior: 'instant'});
-    return Promise.resolve();
-  }
-
-  return new Promise((resolve) => {
-    let timer;
-    const finish = () => {
-      clearTimeout(timer);
-      scroller.removeEventListener('scrollend', finish);
-      scroller.removeEventListener('scroll', onScroll);
-      resolve();
-    };
-    // Also detect settling on browsers without scrollend support.
-    const onScroll = () => {
-      clearTimeout(timer);
-      timer = setTimeout(finish, 150);
-    };
-    scroller.addEventListener('scrollend', finish);
-    scroller.addEventListener('scroll', onScroll, {passive: true});
-    scroller.scrollTo({top: 0, behavior: 'smooth'});
-    onScroll();
+  document.getElementById('panel-experience')?.scrollIntoView({
+    behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start'
   });
+  return Promise.resolve();
 };
 
 if (experienceMount) {
@@ -398,6 +462,17 @@ if (experienceMount) {
         });
 
         experienceMount.replaceChildren(fragment);
+        experienceMount.querySelectorAll('.entry-description li')
+            .forEach((line) => typewriterObserver.observe(line));
+        const detailsObserver = new ResizeObserver((entries) => {
+          for (const {target} of entries) {
+            const details = target.parentElement;
+            if (details.classList.contains('is-open'))
+              details.style.maxHeight = target.scrollHeight + 'px';
+          }
+        });
+        experienceMount.querySelectorAll('.entry-details-inner')
+            .forEach((inner) => detailsObserver.observe(inner));
         if (experienceExpanded) {
           experienceMount.querySelectorAll('.entry-details')
               .forEach((details) => openEntryDetails(details, 0));
@@ -413,43 +488,8 @@ const BLUEPRINT_DATA = '/data/blueprint.json';
 
 const blueprint = document.querySelector('.blueprint');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const blueprintGrid = document.querySelector('.blueprint-grid');
-const scrollRoot = document.querySelector('#panel-experience .panel-scroll');
-
-let recalcLayout = () => {};
-
-if ((blueprint || blueprintGrid) && scrollRoot && !reducedMotion.matches) {
-  let ticking = false;
-
-  const applyScroll = () => {
-    const scrollable = scrollRoot.scrollHeight - scrollRoot.clientHeight;
-    const pageProgress = scrollable > 0 ?
-        Math.min(1, Math.max(0, scrollRoot.scrollTop / scrollable)) :
-        0;
-
-    document.documentElement.style.setProperty(
-        '--page-progress', pageProgress.toFixed(4));
-    document.documentElement.style.setProperty(
-        '--bp-envelope', pageProgress.toFixed(4));
-
-    ticking = false;
-  };
-
-  recalcLayout = applyScroll;
-
-  scrollRoot.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(applyScroll);
-  }, {passive: true});
-
-  window.addEventListener('resize', applyScroll, {passive: true});
-  window.addEventListener('load', applyScroll, {passive: true});
-
-  new ResizeObserver(applyScroll).observe(scrollRoot);
-
-  applyScroll();
-}
+// Layout changes invalidate cached section boundaries; scrolling only reads scrollY.
+const recalcLayout = () => invalidatePageGeometry();
 
 const mountPlates = (plates) => {
   const fragment = document.createDocumentFragment();
@@ -495,177 +535,112 @@ if (blueprint) {
 
 const navLinks = Array.from(document.querySelectorAll('.nav-link[data-panel]'));
 const panels = Array.from(document.querySelectorAll('.panel[data-panel]'));
-const panelTrack = document.querySelector('.panel-track');
-const panelOrder = panels.map((panel) => panel.dataset.panel);
+// Use the actual scrolling element and tolerate fractional pixels at the bottom.
+const sectionScrollProgress = (position, start, end, atBottom = false) =>
+    atBottom ? 1 : end > start ?
+    Math.max(0, Math.min(1, (position - start) / (end - start))) : Number(position >= end);
 
-navLinks.forEach((link) => {
-  const panel = panels.find((panel) => panel.dataset.panel === link.dataset.panel);
-  const scroller = panel?.querySelector('.panel-scroll');
-  const updateProgress = () => {
-    const distance = scroller ? scroller.scrollHeight - scroller.clientHeight : 0;
-    const progress = distance > 0 ?
-        Math.min(1, Math.max(0, scroller.scrollTop / distance)) : 1;
-    link.style.setProperty('--section-progress', progress);
-  };
-  if (scroller) {
-    scroller.addEventListener('scroll', updateProgress, {passive: true});
-    const observer = new ResizeObserver(updateProgress);
-    observer.observe(scroller);
-    if (scroller.firstElementChild) observer.observe(scroller.firstElementChild);
+const navigationItems = navLinks.map((link) => ({
+  link, panel: panels.find((panel) => panel.dataset.panel === link.dataset.panel),
+  progress: '', active: null
+}));
+let pageGeometryDirty = true;
+let pageMaximum = 0;
+let sectionStarts = [];
+let navigationFramePending = false;
+const updateNavigation = () => {
+  const scrollElement = document.scrollingElement || document.documentElement;
+  const position = scrollElement.scrollTop;
+  // Complete every layout read before writing any styles.
+  if (pageGeometryDirty) {
+    pageMaximum = Math.max(0, scrollElement.scrollHeight - scrollElement.clientHeight);
+    sectionStarts = navigationItems.map(({panel}) => Math.max(0,
+        Math.min(pageMaximum, panel.getBoundingClientRect().top + position)));
+    pageGeometryDirty = false;
   }
-  window.addEventListener('load', updateProgress);
-  window.addEventListener('resize', updateProgress, {passive: true});
-  updateProgress();
-});
-
-const showPanel = (name) => {
-  const index = panelOrder.indexOf(name);
-  if (index === -1 || !panelTrack) return;
-
-  panelTrack.style.transform =
-      `translateY(calc(-${index} * var(--panel-h)))`;
-
-  navLinks.forEach((link) => {
-    link.classList.toggle('is-active', link.dataset.panel === name);
-    if (link.dataset.panel === name)
-      link.setAttribute('aria-current', 'page');
-    else
-      link.removeAttribute('aria-current');
+  const atBottom = pageMaximum <= 0 || position >= pageMaximum - 1;
+  const activeIndex = atBottom ? navigationItems.length - 1 :
+      sectionStarts.reduce((active, start, index) => position >= start ? index : active, 0);
+  navigationItems.forEach((item, index) => {
+    const progress = sectionScrollProgress(position, sectionStarts[index],
+        sectionStarts[index + 1] ?? pageMaximum, atBottom).toFixed(4);
+    if (progress !== item.progress) {
+      item.link.style.setProperty('--section-progress', progress);
+      item.progress = progress;
+    }
+    const active = index === activeIndex;
+    if (active !== item.active) {
+      item.link.classList.toggle('is-active', active);
+      if (active) item.link.setAttribute('aria-current', 'location');
+      else item.link.removeAttribute('aria-current');
+      item.active = active;
+    }
   });
-
-  if (name === 'experience') {
-    window.requestAnimationFrame(
-        () => window.requestAnimationFrame(recalcLayout));
-  } else {
-    document.documentElement.style.setProperty('--page-progress', 0);
-  }
 };
-
-// Reset after loading/restoration, including nested scroll positions that the
-// browser can preserve independently of the document's scroll position.
+const scheduleNavigation = () => {
+  if (navigationFramePending) return;
+  navigationFramePending = true;
+  requestAnimationFrame(() => {
+    navigationFramePending = false;
+    updateNavigation();
+  });
+};
+const invalidatePageGeometry = () => {
+  pageGeometryDirty = true;
+  scheduleNavigation();
+};
+window.addEventListener('scroll', scheduleNavigation, {passive: true});
+window.addEventListener('resize', invalidatePageGeometry, {passive: true});
+window.addEventListener('load', invalidatePageGeometry);
+document.addEventListener('load', invalidatePageGeometry, true);
+document.fonts.ready.then(invalidatePageGeometry);
+const navigationObserver = new ResizeObserver(invalidatePageGeometry);
+panels.forEach((panel) => navigationObserver.observe(panel));
+navigationObserver.observe(document.body);
+navLinks.forEach((link) => { link.href = `#panel-${link.dataset.panel}`; });
 window.addEventListener('pageshow', () => {
-  window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-  document.querySelectorAll('.panels, .panel-track, .panel, .panel-scroll')
-      .forEach((element) => {
-        element.scrollTo({top: 0, left: 0, behavior: 'instant'});
-      });
-  showPanel('home');
-  recalcLayout();
+  if (!window.location.hash) window.scrollTo({top: 0, behavior: 'instant'});
+  invalidatePageGeometry();
 });
+scheduleNavigation();
 
-navLinks.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    const targetScrollRoot =
-        document.querySelector(`#panel-${link.dataset.panel} .panel-scroll`);
-    if (targetScrollRoot) targetScrollRoot.scrollTop = 0;
-    showPanel(link.dataset.panel);
+// Use a native modal above the page content.
+const imageViewer = document.createElement('dialog');
+imageViewer.className = 'image-viewer';
+imageViewer.setAttribute('aria-label', 'Image preview');
+imageViewer.innerHTML = `
+  <div class="image-viewer-content">
+    <img alt="">
+    <button type="button" aria-label="Close image preview">&times;</button>
+  </div>`;
+document.body.appendChild(imageViewer);
+
+const previewImage = imageViewer.querySelector('img');
+imageViewer.querySelector('button').addEventListener('click', () => imageViewer.close());
+imageViewer.addEventListener('click', (event) => {
+  if (event.target === imageViewer) imageViewer.close();
+});
+imageViewer.addEventListener('close', () => previewImage.removeAttribute('src'));
+
+document.querySelectorAll('.entry-attachments img, img.pfp').forEach((image) => {
+  image.classList.add('image-preview-trigger');
+  image.tabIndex = 0;
+  image.setAttribute('role', 'button');
+  image.setAttribute('aria-haspopup', 'dialog');
+  image.setAttribute('aria-label', `Open ${image.alt || 'image'}`);
+  const openImage = () => {
+    previewImage.src = image.currentSrc || image.src;
+    previewImage.alt = image.alt;
+    imageViewer.showModal();
+  };
+  image.addEventListener('click', openImage);
+  image.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openImage();
+    }
   });
 });
-
-const panelsRoot = document.querySelector('.panels');
-
-if (panelsRoot && panelTrack && panelOrder.length > 0) {
-  let wheelLocked = false;
-
-  const currentPanelName = () =>
-      navLinks.find((link) => link.classList.contains('is-active'))
-          ?.dataset.panel ??
-      panelOrder[0];
-
-  panelsRoot.addEventListener('wheel', (event) => {
-    const name = currentPanelName();
-    const index = panelOrder.indexOf(name);
-
-    const activeScrollRoot =
-        document.querySelector(`#panel-${name} .panel-scroll`);
-
-    if (activeScrollRoot) {
-      const atTop = activeScrollRoot.scrollTop <= 0;
-      const atBottom =
-          activeScrollRoot.scrollTop + activeScrollRoot.clientHeight >=
-          activeScrollRoot.scrollHeight - 1;
-
-      if ((event.deltaY < 0 && !atTop) || (event.deltaY > 0 && !atBottom))
-        return;
-    }
-
-    const nextIndex = index + (event.deltaY > 0 ? 1 : -1);
-    if (nextIndex < 0 || nextIndex >= panelOrder.length) return;
-
-    event.preventDefault();
-    if (wheelLocked) return;
-
-    wheelLocked = true;
-    showPanel(panelOrder[nextIndex]);
-    window.setTimeout(() => {
-      wheelLocked = false;
-    }, 700);
-  }, {passive: false});
-
-  const SWIPE_THRESHOLD = 48;
-  let touchStartY = 0;
-  let touchStartX = 0;
-  let touchEdge = 0;
-  let touchTracking = false;
-
-  panelsRoot.addEventListener('touchstart', (event) => {
-    if (event.touches.length !== 1) {
-      touchTracking = false;
-      return;
-    }
-
-    touchStartY = event.touches[0].clientY;
-    touchStartX = event.touches[0].clientX;
-    touchTracking = true;
-
-    const activeScrollRoot =
-        document.querySelector(`#panel-${currentPanelName()} .panel-scroll`);
-
-    if (!activeScrollRoot) {
-      touchEdge = 3;
-      return;
-    }
-
-    touchEdge = 0;
-    if (activeScrollRoot.scrollTop <= 0) touchEdge |= 1;
-    if (activeScrollRoot.scrollTop + activeScrollRoot.clientHeight >=
-        activeScrollRoot.scrollHeight - 1)
-      touchEdge |= 2;
-  }, {passive: true});
-
-  panelsRoot.addEventListener('touchmove', (event) => {
-    if (!touchTracking || event.touches.length !== 1) return;
-
-    const deltaY = touchStartY - event.touches[0].clientY;
-    const deltaX = touchStartX - event.touches[0].clientX;
-    if (Math.abs(deltaY) < SWIPE_THRESHOLD ||
-        Math.abs(deltaY) <= Math.abs(deltaX))
-      return;
-
-    const goingDown = deltaY > 0;
-    if ((goingDown && !(touchEdge & 2)) || (!goingDown && !(touchEdge & 1)))
-      return;
-
-    const nextIndex = panelOrder.indexOf(currentPanelName()) +
-        (goingDown ? 1 : -1);
-    if (nextIndex < 0 || nextIndex >= panelOrder.length) return;
-
-    if (event.cancelable) event.preventDefault();
-    touchTracking = false;
-    if (wheelLocked) return;
-
-    wheelLocked = true;
-    showPanel(panelOrder[nextIndex]);
-    window.setTimeout(() => {
-      wheelLocked = false;
-    }, 700);
-  }, {passive: false});
-
-  panelsRoot.addEventListener('touchend', () => {
-    touchTracking = false;
-  }, {passive: true});
-}
 
 const GRADIENT_DEBUG_CONTROLS = [
   {
@@ -676,15 +651,6 @@ const GRADIENT_DEBUG_CONTROLS = [
     max: 1,
     step: 0.01,
     value: 0.8
-  },
-  {
-    group: 'Grid',
-    label: 'Scroll multiplier',
-    prop: '--bp-mult',
-    min: 0,
-    max: 1,
-    step: 0.01,
-    value: 1
   },
   {
     group: 'Grid',
@@ -754,15 +720,6 @@ const GRADIENT_DEBUG_CONTROLS = [
     max: 1,
     step: 0.01,
     value: 0.3
-  },
-  {
-    group: 'SVG plates',
-    label: 'Scroll multiplier',
-    prop: '--svg-scroll-mult',
-    min: 0,
-    max: 1,
-    step: 0.01,
-    value: 1
   },
   {
     group: 'SVG plates',

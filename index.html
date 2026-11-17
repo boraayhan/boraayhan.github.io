@@ -11,11 +11,11 @@
     <link rel="icon" type="image/x-icon" href="/assets/icons/headshot.png">
     <link rel="stylesheet" href="/style.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300..700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
         rel="stylesheet">
 </head>
 
-<body>
+<body data-mobile-project-images="stacked">
     <nav class="side-nav" aria-label="Primary">
         <ul>
             <li><a class="nav-link is-active" href="#home" data-panel="home" aria-current="page">Home</a></li>
@@ -26,93 +26,96 @@
 
     <main class="panels">
         <div class="panel-track">
-        <section class="panel" id="panel-home" data-panel="home">
-            <div id="opening-bg" aria-label="Background video of Bora's engineering projects">
-                <video class="opening-bg-layer is-active" autoplay muted playsinline preload="auto"></video>
-                <video class="opening-bg-layer" muted playsinline preload="auto"></video>
-            </div>
-            <div class="home-text">
-                <h1><span class="big-letter">B</span>ora<br><span class="big-letter">A</span>yhan</h1>
-            </div>
-        </section>
+            <section class="panel" id="panel-home" data-panel="home">
+                <div id="opening-bg" aria-label="Background video of Bora's engineering projects">
+                    <video class="opening-bg-layer is-active" autoplay muted playsinline preload="auto"></video>
+                    <video class="opening-bg-layer" muted playsinline preload="auto"></video>
+                </div>
+                <div class="home-text">
+                    <h1><span class="big-letter">B</span>ora<br><span class="big-letter">A</span>yhan</h1>
+                </div>
+            </section>
 
-        <section class="panel" id="panel-experience" data-panel="experience">
-            <div class="panel-scroll">
-                <div class="experience-canvas">
-                <div class="blueprint-grid" aria-hidden="true"></div>
-                <div class="blueprint" aria-hidden="true"></div>
-                <header class="site-header">
-                    <img src="/assets/icons/headshot.png" alt="Bora Ayhan" class="pfp">
-                    <div class="site-header-text">
-                        <h1>Bora Ayhan</h1>
-                        <h2>Engineer</h2>
-                        <nav class="mobile-contacts" aria-label="Contact and résumé">
-                            <a href="https://www.linkedin.com/in/bora-ayhan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" title="LinkedIn">
-                                <img src="/assets/icons/linkedin.webp" alt="">
-                            </a>
-                            <a class="contact-github" href="https://github.com/boraayhan" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" title="GitHub">
-                                <img src="/assets/icons/github.png" alt="">
-                            </a>
-                            <a class="contact-resume" href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open résumé PDF" title="Résumé PDF">
-                                <img src="/assets/icons/resume.jpg" alt="">
-                                <span>PDF</span>
-                            </a>
-                        </nav>
+            <section class="panel" id="panel-experience" data-panel="experience">
+                <div class="panel-scroll">
+                    <div class="experience-canvas">
+                        <div class="blueprint-grid" aria-hidden="true"></div>
+                        <div class="blueprint" aria-hidden="true"></div>
+                        <header class="site-header">
+                            <img src="/assets/icons/headshot.png" alt="Bora Ayhan" class="pfp">
+                            <div class="site-header-text">
+                                <h1>Bora Ayhan</h1>
+                                <h2>Engineer</h2>
+                                <nav class="mobile-contacts" aria-label="Contact and résumé">
+                                    <a href="https://www.linkedin.com/in/bora-ayhan" target="_blank"
+                                        rel="noopener noreferrer" aria-label="LinkedIn profile" title="LinkedIn">
+                                        <img src="/assets/icons/linkedin.webp" alt="">
+                                    </a>
+                                    <a class="contact-github" href="https://github.com/boraayhan" target="_blank"
+                                        rel="noopener noreferrer" aria-label="GitHub profile" title="GitHub">
+                                        <img src="/assets/icons/github.png" alt="">
+                                    </a>
+                                    <a class="contact-resume" href="/resume.pdf" target="_blank"
+                                        rel="noopener noreferrer" aria-label="Open résumé PDF" title="Résumé PDF">
+                                        <img src="/assets/icons/resume.jpg" alt="">
+                                        <span>PDF</span>
+                                    </a>
+                                </nav>
+                            </div>
+                        </header>
+                        <div class="content" id="content">
+                            <div id="experience"></div>
+                            <button class="experience-toggle experience-toggle-bottom" type="button"
+                                aria-expanded="false" aria-controls="experience">See details</button>
+                        </div>
                     </div>
-                </header>
-                <div class="content" id="content">
-                    <div id="experience"></div>
-                    <button class="experience-toggle experience-toggle-bottom" type="button" aria-expanded="false" aria-controls="experience">See details</button>
                 </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="panel" id="panel-projects" data-panel="projects">
-            <div class="panel-scroll">
-                <div class="experience-canvas">
-                <div class="blueprint-grid" aria-hidden="true"></div>
-                <div class="blueprint" aria-hidden="true"></div>
-                <div class="content">
-                    <h1>Projects</h1>
-                    <ul class="bullets">
-                        <li class="entry entry-with-attachments">
-                            <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
-                                <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
-                                </svg> <!--We love vibecoded svg's!!!!!!!-->
-                            </a>
-                            <div class="entry-text">
-                                <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
-                                <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
-                            </div>
-                            <div class="entry-attachments">
-                                <img class="attachment-placeholder" style="--ar: 1.3333" src="/assets/project-banners/hauler-banner.jpg" alt="Hauler cargo UAV" loading="lazy">
-                                <img class="attachment-placeholder" style="--ar: 4.4138" src="/assets/project-banners/vector2-banner.png" alt="Vector 2 airframe" loading="lazy">
-                            </div>
-                        </li>
-                        <li class="entry entry-with-attachments">
-                            <a class="org-link project-link" target="_blank" href="" aria-label="TALON Flight Computer">
-                                <svg class="project-arrow" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-                                    <path
-                                        d="M1 1.8369655v4.105263c0 2.084211 1.7052632 3.789474 3.7894737 3.789474H8.578947v2.4313325L13 8.4685445l-4.421053-3.69449v2.431332H4.7894737c-.6947369 0-1.2631579-.568421-1.2631579-1.263158v-4.105263H1z" />
-                                </svg> <!--We love vibecoded svg's!!!!!!!-->
-                            </a>
-                            <div class="entry-text">
-                                <span class="entry-role">TALON Flight Computer <span class="entry-assoc">Own IP</span></span>
-                                <span class="entry-org">C++ flight software with autopilot, for Class 1 UAVs</span>
-                            </div>
-                            <div class="entry-attachments">
-                                <img class="attachment-placeholder" style="--ar: 4.4138" src="/assets/project-banners/consolidate-banner.png" alt="Consolidate telemetry tooling" loading="lazy">
-                                <img class="attachment-placeholder" style="--ar: 1.5" src="/assets/project-banners/aria-banner.jpeg" alt="ARIA rover" loading="lazy">
-                            </div>
-                        </li>
-                    </ul>
+            <section class="panel" id="panel-projects" data-panel="projects">
+                <div class="panel-scroll">
+                    <div class="experience-canvas">
+                        <div class="content">
+                            <h1>Projects</h1>
+                            <ul class="bullets">
+                                <li class="entry entry-with-attachments">
+                                    <div class="entry-text">
+                                        <span class="entry-role">TALON Flight Computer <a class="project-title-link" href="https://github.com/boraayhan/TALON-Flight-Computer" target="_blank" rel="noopener noreferrer" aria-label="View TALON Flight Computer on GitHub">↗</a></span>
+                                        <span class="entry-org">C++ flight software with autopilot, for Class 1
+                                            UAVs</span>
+                                    </div>
+                                    <span class="entry-date">Jul. 2026 – Aug. 2026</span>
+                                    <div class="entry-attachments">
+                                        <img class="attachment-placeholder attachment-diagram" style="--ar: 0.7920"
+                                            src="/assets/project_images/TALON_System_Architecture.svg"
+                                            alt="TALON system architecture"
+                                            loading="lazy" width="929" height="1173" decoding="async">
+                                        <img class="attachment-placeholder" style="--ar: 4.4138"
+                                            src="/assets/project-banners/vector2-banner.png" alt="Vector 2 airframe"
+                                            loading="lazy" width="1920" height="435" decoding="async">
+                                    </div>
+                                </li>
+                                <li class="entry entry-with-attachments">
+                                    <div class="entry-text">
+                                        <span class="entry-role">TALON Flight Computer <a class="project-title-link" href="https://github.com/boraayhan/TALON-Flight-Computer" target="_blank" rel="noopener noreferrer" aria-label="View TALON Flight Computer on GitHub">↗</a></span>
+                                        <span class="entry-org">C++ flight software with autopilot, for Class 1
+                                            UAVs</span>
+                                    </div>
+                                    <span class="entry-date">Jul. 2026 – Aug. 2026</span>
+                                    <div class="entry-attachments">
+                                        <img class="attachment-placeholder" style="--ar: 4.4138"
+                                            src="/assets/project-banners/consolidate-banner.png"
+                                            alt="Consolidate telemetry tooling" loading="lazy" width="1920" height="435" decoding="async">
+                                        <img class="attachment-placeholder" style="--ar: 1.5"
+                                            src="/assets/project-banners/aria-banner.jpeg" alt="ARIA rover"
+                                            loading="lazy" width="6000" height="4000" decoding="async">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
     </main>
 
