@@ -1,0 +1,254 @@
+{
+  "sections": [
+    {
+      "label": null,
+      "entries": [
+        {
+          "title": "Guidance, Navigation, Control (GNC) Lead",
+          "org": "Texas Aerial Robotics",
+          "href": "https://texasaerialrobotics.netlify.app/",
+          "logo": "/assets/icons/logos/texas-aerial-robotics.jpg",
+          "logoLight": false,
+          "date": "Sep. 2026 – present",
+          "location": "Austin, TX",
+          "skills": [
+            "ROS2",
+            "Jetson",
+            "Linux",
+            "LiDAR"
+          ],
+          "description": [
+            "Configured NVIDIA Jetson (Linux) to interface with LiDAR, QGroundControl, and network telemetry router."
+          ]
+        },
+        {
+          "title": "Simulation/Validation Engineer",
+          "org": "Longhorn Racing",
+          "href": "https://www.longhornracing.org/",
+          "logo": "/assets/icons/logos/longhorn-racing.png",
+          "logoLight": true,
+          "date": "Sep. 2026 – present",
+          "location": "Austin, TX",
+          "skills": [
+            "Postgres",
+            "QSS Lapsim",
+            "Systems Integration",
+            "CoDR/PDR/CDR"
+          ],
+          "description": [
+            "Designed and implementing PostgreSQL team database with simulation workflow automation.",
+            "Presented PDR on tuning quasi-static lap time simulator (QSS) deltas with empirical data for accuracy."
+          ]
+        },
+        {
+          "title": "AI Segmentation Researcher",
+          "org": "Group for AI in Materials Modeling and Analysis (GAMMA) Lab",
+          "href": "https://zhantaochen.github.io/gamma-ut-austin/",
+          "logo": "/assets/icons/logos/gamma-lab.png",
+          "logoLight": true,
+          "date": "Aug. 2026 – present",
+          "location": "Austin, TX",
+          "skills": [
+            "SAM3",
+            "SEM",
+            "Python",
+            "Research"
+          ],
+          "description": [
+            "Researching AI-assisted particle characterization from SEM images using segmentation models with TACC."
+          ]
+        },
+        {
+          "title": "Controls Researcher",
+          "org": "Texas Guadaloop",
+          "href": "https://txguadaloop.org",
+          "logo": "/assets/icons/logos/texas-guadaloop.png",
+          "logoLight": true,
+          "date": "Sep. 2026 – present",
+          "location": "Austin, TX",
+          "skills": [
+            "Controls",
+            "Python"
+          ],
+          "description": []
+        },
+        {
+          "title": "Proposal Writer",
+          "org": "L’SPACE NASA Proposal Writing and Evaluation Experience",
+          "href": "https://www.lspace.asu.edu/",
+          "date": "Sep. 2026 – present",
+          "location": "Virtual",
+          "skills": [
+            "Research",
+            "CONOPS",
+            "Project Management"
+          ],
+          "description": [
+            "Integration Engineer for data triage project (NASA Taxonomy TX05.3.1: Disruption Tolerant Networking)."
+          ],
+          "logo": "/assets/icons/logos/lspace.svg"
+        },
+        {
+          "title": "B.S. Mechanical Engineering, Minor in Robotics",
+          "org": "The University of Texas at Austin",
+          "href": "https://utexas.edu",
+          "logo": "/assets/icons/logos/ut-austin.svg",
+          "logoLight": true,
+          "education": true,
+          "date": "May 2028",
+          "location": "Austin, TX",
+          "skills": [],
+          "description": [
+            "Robotics Honors, Engineering Honors, ASME Member, AIAA Member."
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Previously",
+      "entries": [
+        {
+          "title": "Software Intern",
+          "org": "Autonomy, Robotics, Intelligent Algorithms (ARIA) Lab",
+          "href": "https://www.ariarobotics.com/",
+          "logo": "/assets/icons/logos/aria-lab.png",
+          "logoLight": false,
+          "date": "Jun. 2025 – Aug. 2025",
+          "location": "Golden, CO",
+          "skills": [
+            "ROS2",
+            "SLAM",
+            "Docker",
+            "Computer Vision",
+            "LiDAR"
+          ],
+          "description": [
+            "Published open-source drivers, packages, Dockerized computer vision and SLAM pipelines using ROS2, and internal documentation for the Boston Dynamics Spot, Clearpath Husky, and the ARIA Lab Sensor Backpack.",
+            "Collected over 50GB of LiDAR, camera, and odometry data (rosbags) for sensor fusion research by directing on-site experiment and demonstration of SLAM software at Edgar Experimental Mine, simulated on Gazebo."
+          ]
+        },
+        {
+          "title": "Software Lead",
+          "org": "FIRST Robotics Team 4293",
+          "href": "https://team4293.weebly.com/",
+          "logo": "/assets/icons/logos/first-robotics.webp",
+          "logoLight": true,
+          "date": "Dec. 2023 – May 2026",
+          "location": "Louviers, CO",
+          "skills": [
+            "Java",
+            "Sensor Fusion",
+            "AprilTag",
+            "Version control (Git)"
+          ],
+          "description": [
+            "Increased team’s average points scored per match by 60% by developing sensor fusion targeting pipeline combining vision (ARUCO tags), IMU, and swerve drive encoders in a triple-redundant subsystem in Java.",
+            "Owned pull request reviews to ensure reliability, achieving 100% code uptime in competitions."
+          ]
+        },
+        {
+          "title": "Founder, President",
+          "org": "Arapahoe Rocketry Club",
+          "href": "https://github.com/ArapahoeRocketryClub/Rocket2/",
+          "date": "Apr. 2024 – May 2026",
+          "location": "Littleton, CO",
+          "skills": [
+            "C++",
+            "PID",
+            "Sensor Fusion",
+            "Leadership",
+            "CoDR/PDR/CDR"
+          ],
+          "description": [
+            "Led a team of 15 students in the design, production, and testing of a thrust-vector-controlled (TVC) rocket.",
+            "Architected TVC system with PID/sensor fusion (Kalman-filtered IMU/barometer) around an FSM.",
+            "Organized internal PDR and external industry CDR with CONOPS, state diagrams, and risk assessment."
+          ],
+          "logo": "/assets/icons/logos/arapahoe-rocketry.png"
+        }
+      ]
+    },
+    {
+      "label": "Volunteering",
+      "entries": [
+        {
+          "title": "Museum Docent",
+          "org": "Denver Museum of Nature and Science",
+          "href": "https://www.dmns.org/",
+          "date": "Mar. 2024 – Aug. 2026",
+          "location": "Denver, CO",
+          "skills": [],
+          "description": [],
+          "logo": "/assets/icons/logos/dmns.svg"
+        },
+        {
+          "title": "Lobbying Board Member",
+          "org": "Colorado Gifted and Talented Student Board",
+          "href": "https://www.cgtsb.org/home",
+          "date": "Oct. 2025 – Jun. 2026",
+          "location": "Denver, CO",
+          "skills": [],
+          "description": [],
+          "logo": "/assets/icons/logos/cgtsb.svg"
+        }
+      ],
+      "fullOnly": true
+    },
+    {
+      "label": "Awards",
+      "entries": [
+        {
+          "title": "National Merit Scholarship",
+          "org": "Finalist and Scholar",
+          "href": "https://www.nationalmerit.org/",
+          "date": "2026",
+          "skills": [],
+          "description": [],
+          "logo": "/assets/icons/logos/national-merit.jpeg",
+          "logoLight": true,
+          "logoScale": 0.9,
+          "logoContentWidth": 0.6394640682
+        },
+        {
+          "title": "Boettcher Scholarship",
+          "org": "Semifinalist",
+          "href": "https://boettcherfoundation.org/",
+          "date": "2026",
+          "skills": [],
+          "description": [],
+          "logo": "/assets/icons/logos/boettcher.webp",
+          "logoLight": true
+        },
+        {
+          "title": "Presidential Scholarship Nominee",
+          "org": "U.S. Department of Education",
+          "href": "https://www.ed.gov/media/document/2026-presidential-scholars-program-candidates-may-12-2026-113210.pdf",
+          "date": "2026",
+          "skills": [],
+          "description": [],
+          "fullOnly": true,
+          "logo": "/assets/icons/logos/presidential-scholars.png"
+        },
+        {
+          "title": "School of Mines Programming Competition",
+          "org": "Second Place (Python)",
+          "href": "https://mineshspc.com/",
+          "date": "2024",
+          "skills": [],
+          "description": [],
+          "logo": "/assets/icons/logos/mines-hspc.png",
+          "logoLight": true
+        },
+        {
+          "title": "Lockheed Martin “CodeQuest” Programming Competition",
+          "org": "Third Place (Python)",
+          "href": "https://www.lockheedmartin.com/en-us/who-we-are/communities/codequest.html",
+          "logo": "/assets/icons/logos/codequest.png",
+          "date": "2023",
+          "skills": [],
+          "description": []
+        }
+      ]
+    }
+  ]
+}
