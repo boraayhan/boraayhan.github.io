@@ -43,6 +43,11 @@ const layers =
     Array.from(document.querySelectorAll('#opening-bg .opening-bg-layer'));
 
 if (layers.length === 2 && COVER_VIDEOS.length > 0) {
+  const toggle = document.getElementById('hero-video-toggle');
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileVideo = window.matchMedia('(max-width: 768px)').matches;
+  const connection = navigator.connection;
+  const failedFiles = new Set();
   let index = 0;
   const orders = new Map();
   const clip = (i) => {
@@ -55,84 +60,184 @@ if (layers.length === 2 && COVER_VIDEOS.length > 0) {
     }
     return orders.get(cycle)[i % COVER_VIDEOS.length];
   };
-  let failures = 0;
   let heroVisible = false;
-  let current = layers[0];
-  let next = layers[1];
+  let userPaused = false;
+  let controlAvailable = false;
+  let displayed = null;
+  let pending = null;
+  const playAttempts = new WeakMap();
+
+  const prefersPoster = () => motionPreference.matches || connection?.saveData;
+  const shouldPlay = () =>
+      heroVisible && !document.hidden && !userPaused && !prefersPoster();
+  const otherLayer = (video) => layers.find((layer) => layer !== video);
+
+  const updateToggle = () => {
+    if (!toggle) return;
+    toggle.hidden = !controlAvailable || Boolean(prefersPoster());
+    const label = userPaused ? 'Play background video' : 'Pause background video';
+    toggle.textContent = label;
+    toggle.setAttribute('aria-label', label);
+  };
+
+  const findPlayable = (start) => {
+    if (failedFiles.size >= COVER_VIDEOS.length) return null;
+    // Include a full next cycle when the current shuffle is almost finished.
+    for (let i = start; i < start + COVER_VIDEOS.length * 2; i++) {
+      if (!failedFiles.has(clip(i)[0])) return i;
+    }
+    return null;
+  };
 
   const prime = (video, i) => {
     const [file, rate] = clip(i);
+    const stem = file.replace(/\.[^.]+$/, '').toLowerCase();
+    video.dataset.file = file;
     video.dataset.rate = rate;
     video.dataset.playlistIndex = i;
-    video.src = COVER_VIDEO_DIR + file;
+    video.muted = true;
+    video.preload = 'auto';
+    video.src = `${COVER_VIDEO_DIR}optimized/${stem}${mobileVideo ? '-mobile' : ''}.mp4`;
     video.playbackRate = rate;
     video.load();
   };
 
-  const advance = () => {
-    index = Number(next.dataset.playlistIndex);
+  const prepareNext = (start = index + 1) => {
+    const video = displayed ? otherLayer(displayed) : layers[0];
+    if (video.getAttribute('src') &&
+        Number(video.dataset.playlistIndex) >= start &&
+        !failedFiles.has(video.dataset.file)) return video;
+    const nextIndex = findPlayable(start);
+    if (nextIndex === null) return null;
+    prime(video, nextIndex);
+    return video;
+  };
 
-    const incoming = next;
-    const outgoing = current;
+  const playVideo = (video) => {
+    const attempt = Symbol('play');
+    const source = video.src;
+    playAttempts.set(video, attempt);
+    video.play().catch((error) => {
+      if (playAttempts.get(video) !== attempt || video.src !== source ||
+          video !== (pending || displayed) || error.name === 'AbortError') return;
+      // Media errors are handled by the error event; autoplay denial needs a tap.
+      if (video.error || error.name === 'NotSupportedError') return;
+      userPaused = true;
+      controlAvailable = true;
+      updateToggle();
+    });
+  };
 
-    incoming.playbackRate = Number(incoming.dataset.rate);
-    incoming.currentTime = 0;
-    if (heroVisible && !document.hidden) incoming.play().catch(() => {});
+  const syncPlayback = () => {
+    if (prefersPoster()) {
+      layers.forEach((video) => video.classList.remove('is-active'));
+      updateToggle();
+    }
+    if (!shouldPlay()) {
+      layers.forEach((video) => video.pause());
+      return;
+    }
+    if (!pending && !displayed) {
+      pending = prepareNext(0);
+      if (!pending) return;
+    }
+    const target = pending || displayed;
+    layers.forEach((video) => {
+      if (video !== target) video.pause();
+    });
+    playVideo(target);
+  };
 
-    incoming.classList.add('is-active');
-    outgoing.classList.remove('is-active');
-
-    current = incoming;
-    next = outgoing;
-
-    outgoing.pause();
-    prime(outgoing, index + 1);
+  const showPosterAfterFailure = () => {
+    pending = null;
+    displayed = null;
+    userPaused = true;
+    controlAvailable = true;
+    layers.forEach((video) => {
+      video.pause();
+      video.classList.remove('is-active');
+      video.removeAttribute('src');
+      video.load();
+    });
+    updateToggle();
   };
 
   layers.forEach((video) => {
-    video.addEventListener('ended', () => {
-      if (video === current) advance();
-    });
+    video.classList.remove('is-active');
     video.addEventListener('loadedmetadata', () => {
       video.playbackRate = Number(video.dataset.rate);
-      failures = 0;
+    });
+    video.addEventListener('playing', () => {
+      if (video !== (pending || displayed) || !shouldPlay()) {
+        video.pause();
+        return;
+      }
+      const outgoing = displayed;
+      displayed = video;
+      pending = null;
+      index = Number(video.dataset.playlistIndex);
+      // Keep the poster or outgoing frame visible until this clip is playing.
+      layers.forEach((layer) => layer.classList.toggle('is-active', layer === video));
+      if (outgoing && outgoing !== video) outgoing.pause();
+      controlAvailable = true;
+      updateToggle();
+    });
+    video.addEventListener('timeupdate', () => {
+      if (video !== displayed || pending || !shouldPlay()) return;
+      if (Number.isFinite(video.duration) && video.duration - video.currentTime <= 6)
+        prepareNext();
+    });
+    video.addEventListener('ended', () => {
+      if (video !== displayed || pending) return;
+      pending = prepareNext();
+      if (pending) syncPlayback();
+      else showPosterAfterFailure();
     });
     video.addEventListener('error', () => {
+      if (!video.error || !video.dataset.file) return;
+      failedFiles.add(video.dataset.file);
       console.warn('cover video failed to load:', video.getAttribute('src'));
-      failures += 1;
-      if (failures >= COVER_VIDEOS.length) return;
-      if (video === current)
-        advance();
-      else
-        prime(video, Number(video.dataset.playlistIndex) + 1);
+      const start = Number(video.dataset.playlistIndex) + 1;
+      if (video === (pending || displayed)) {
+        pending = prepareNext(start);
+        if (pending) syncPlayback();
+        else showPosterAfterFailure();
+      } else if (video !== displayed) {
+        prepareNext(start);
+      }
     });
   });
 
-  const syncPlayback = () => {
-    layers.forEach((video) => {
-      if (video === current && heroVisible && !document.hidden)
-        video.play().catch(() => {});
-      else video.pause();
-    });
-  };
+  toggle?.addEventListener('click', () => {
+    userPaused = !userPaused;
+    if (!userPaused && !displayed && !pending) failedFiles.clear();
+    updateToggle();
+    syncPlayback();
+  });
   new IntersectionObserver(([entry]) => {
     heroVisible = entry.isIntersecting;
     syncPlayback();
   }).observe(document.getElementById('home'));
   document.addEventListener('visibilitychange', syncPlayback);
-  prime(current, 0);
-  prime(next, 1);
+  motionPreference.addEventListener('change', syncPlayback);
+  connection?.addEventListener?.('change', syncPlayback);
+  updateToggle();
 }
 
 const EXPERIENCE_DATA = '/data/experience.json';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const experienceMount = document.getElementById('experience-list');
+if (experienceMount) experienceMount.setAttribute('aria-busy', 'true');
 
 const buildOrgIcon = (entry) => {
   const logo = document.createElement('img');
   logo.src = entry.logo;
   logo.alt = (entry.org || entry.title) + ' logo';
+  logo.loading = 'lazy';
+  logo.decoding = 'async';
+  logo.width = 144;
+  logo.height = 144;
   if (entry.logoContentWidth != null) {
     const tile = document.createElement('span');
     tile.className = 'org-icon org-icon-scaled';
@@ -205,6 +310,7 @@ const buildEntry = (entry) => {
   if (description.length > 0 || skills.length > 0) {
     const details = document.createElement('div');
     details.className = 'entry-details';
+    details.setAttribute('aria-hidden', 'true');
 
     const inner = document.createElement('div');
     inner.className = 'entry-details-inner';
@@ -351,6 +457,7 @@ const openEntryDetails = async (details, delay) => {
   if (!isCurrent(details, token)) return;
 
   details.classList.add('is-open');
+  details.setAttribute('aria-hidden', 'false');
   details.style.maxHeight = measure(details) + 'px';
 
   if (reducedMotion.matches) {
@@ -363,15 +470,16 @@ const openEntryDetails = async (details, delay) => {
   await wait(SLIDE_DURATION);
   if (!isCurrent(details, token)) return;
 
-  for (const span of details.querySelectorAll('.typewriter')) {
-    if (!await typeText(details, span, token)) return;
-  }
+  // Each visible line can start even when an earlier line is offscreen.
+  await Promise.all(Array.from(details.querySelectorAll('.typewriter'),
+      (span) => typeText(details, span, token)));
 };
 
 const closeEntryDetails = async (details, delay) => {
   const token = Symbol('close');
   runTokens.set(details, token);
   cancelTextJobs(details);
+  details.setAttribute('aria-hidden', 'true');
 
   if (delay) await wait(delay);
   if (!isCurrent(details, token)) return;
@@ -395,6 +503,7 @@ const closeEntryDetails = async (details, delay) => {
 
 const experienceToggle = document.querySelector('.experience-toggle');
 let experienceExpanded = false;
+if (experienceToggle) experienceToggle.hidden = true;
 
 if (experienceMount && experienceToggle) {
   const toggleExperience = () => {
@@ -453,6 +562,8 @@ if (experienceMount) {
         });
 
         experienceMount.replaceChildren(fragment);
+        experienceMount.setAttribute('aria-busy', 'false');
+        if (experienceToggle) experienceToggle.hidden = false;
         experienceMount.querySelectorAll('.entry-description li')
             .forEach((line) => typewriterObserver.observe(line));
         const detailsObserver = new ResizeObserver((entries) => {
@@ -471,6 +582,17 @@ if (experienceMount) {
       })
       .catch((error) => {
         console.error('could not load experience data:', error);
+        experienceMount.setAttribute('aria-busy', 'false');
+        if (experienceToggle) experienceToggle.hidden = true;
+        const message = document.createElement('p');
+        message.textContent = 'Experience details could not load. ';
+        const resume = document.createElement('a');
+        resume.href = '/resume.pdf';
+        resume.target = '_blank';
+        resume.rel = 'noopener noreferrer';
+        resume.textContent = 'View my résumé instead.';
+        message.appendChild(resume);
+        experienceMount.replaceChildren(message);
       });
 }
 
@@ -499,7 +621,7 @@ document.querySelectorAll('.project-images img, img.pfp').forEach((image) => {
   image.setAttribute('aria-haspopup', 'dialog');
   image.setAttribute('aria-label', `Open ${image.alt || 'image'}`);
   const openImage = () => {
-    previewImage.src = image.currentSrc || image.src;
+    previewImage.src = image.dataset.previewSrc || image.currentSrc || image.src;
     previewImage.alt = image.alt;
     imageViewer.showModal();
   };

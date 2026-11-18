@@ -7,7 +7,7 @@
           "title": "Guidance, Navigation, Control (GNC) Lead",
           "org": "Texas Aerial Robotics",
           "href": "https://texasaerialrobotics.netlify.app/",
-          "logo": "/assets/icons/logos/texas-aerial-robotics.jpg",
+          "logo": "/assets/icons/logos/texas-aerial-robotics-small.webp",
           "logoLight": false,
           "date": "Sep. 2026 – present",
           "location": "Austin, TX",
@@ -25,7 +25,7 @@
           "title": "Simulation/Validation Engineer",
           "org": "Longhorn Racing",
           "href": "https://www.longhornracing.org/",
-          "logo": "/assets/icons/logos/longhorn-racing.png",
+          "logo": "/assets/icons/logos/longhorn-racing-small.webp",
           "logoLight": true,
           "date": "Sep. 2026 – present",
           "location": "Austin, TX",
@@ -44,7 +44,7 @@
           "title": "AI Segmentation Researcher",
           "org": "Group for AI in Materials Modeling and Analysis (GAMMA) Lab",
           "href": "https://zhantaochen.github.io/gamma-ut-austin/",
-          "logo": "/assets/icons/logos/gamma-lab.png",
+          "logo": "/assets/icons/logos/gamma-lab-small.webp",
           "logoLight": true,
           "date": "Aug. 2026 – present",
           "location": "Austin, TX",
@@ -62,7 +62,7 @@
           "title": "Controls Researcher",
           "org": "Texas Guadaloop",
           "href": "https://txguadaloop.org",
-          "logo": "/assets/icons/logos/texas-guadaloop.png",
+          "logo": "/assets/icons/logos/texas-guadaloop-small.webp",
           "logoLight": true,
           "date": "Sep. 2026 – present",
           "location": "Austin, TX",
@@ -111,7 +111,7 @@
           "title": "Software Intern",
           "org": "Autonomy, Robotics, Intelligent Algorithms (ARIA) Lab",
           "href": "https://www.ariarobotics.com/",
-          "logo": "/assets/icons/logos/aria-lab.png",
+          "logo": "/assets/icons/logos/aria-lab-small.webp",
           "logoLight": false,
           "date": "Jun. 2025 – Aug. 2025",
           "location": "Golden, CO",
@@ -131,7 +131,7 @@
           "title": "Software Lead",
           "org": "FIRST Robotics Team 4293",
           "href": "https://team4293.weebly.com/",
-          "logo": "/assets/icons/logos/first-robotics.webp",
+          "logo": "/assets/icons/logos/first-robotics-small.webp",
           "logoLight": true,
           "date": "Dec. 2023 – May 2026",
           "location": "Louviers, CO",
@@ -164,7 +164,7 @@
             "Architected TVC system with PID/sensor fusion (Kalman-filtered IMU/barometer) around an FSM.",
             "Organized internal PDR and external industry CDR with CONOPS, state diagrams, and risk assessment."
           ],
-          "logo": "/assets/icons/logos/arapahoe-rocketry.png"
+          "logo": "/assets/icons/logos/arapahoe-rocketry-small.webp"
         }
       ]
     },
@@ -204,7 +204,7 @@
           "date": "2026",
           "skills": [],
           "description": [],
-          "logo": "/assets/icons/logos/national-merit.jpeg",
+          "logo": "/assets/icons/logos/national-merit-small.webp",
           "logoLight": true,
           "logoScale": 0.9,
           "logoContentWidth": 0.6394640682
@@ -216,7 +216,7 @@
           "date": "2026",
           "skills": [],
           "description": [],
-          "logo": "/assets/icons/logos/boettcher.webp",
+          "logo": "/assets/icons/logos/boettcher-small.webp",
           "logoLight": true
         },
         {
@@ -227,7 +227,7 @@
           "skills": [],
           "description": [],
           "fullOnly": true,
-          "logo": "/assets/icons/logos/presidential-scholars.png"
+          "logo": "/assets/icons/logos/presidential-scholars-small.webp"
         },
         {
           "title": "School of Mines Programming Competition",
@@ -236,7 +236,7 @@
           "date": "2024",
           "skills": [],
           "description": [],
-          "logo": "/assets/icons/logos/mines-hspc.png",
+          "logo": "/assets/icons/logos/mines-hspc-small.webp",
           "logoLight": true
         },
         {

@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bora Ayhan</title>
-    <script>
-        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    </script>
-    <link rel="icon" type="image/x-icon" href="/assets/icons/headshot.png">
-    <link rel="stylesheet" href="/style.css?v=2">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
-        rel="stylesheet">
+    <title>Bora Ayhan — Engineer</title>
+    <meta name="description" content="Engineering projects, robotics research, and experience from Bora Ayhan.">
+    <meta name="theme-color" content="#101418">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="preload" as="image" href="/assets/cover_video/hero-poster-mobile.webp" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/assets/cover_video/hero-poster.webp" media="(min-width: 769px)" fetchpriority="high">
+    <link rel="stylesheet" href="/style.css?v=3">
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/space-grotesk-latin.woff2" crossorigin>
 </head>
 
 <body>
@@ -26,22 +25,26 @@
 
     <main class="site-main">
         <section class="page-section" id="home">
-            <div id="opening-bg" aria-label="Background video of Bora's engineering projects">
-                <video class="opening-bg-layer is-active" muted playsinline preload="metadata"></video>
-                <video class="opening-bg-layer" muted playsinline preload="metadata"></video>
+            <div id="opening-bg" aria-hidden="true">
+                <picture class="hero-poster">
+                    <source media="(max-width: 768px)" srcset="/assets/cover_video/hero-poster-mobile.webp">
+                    <img src="/assets/cover_video/hero-poster.webp" alt="" width="1280" height="720" fetchpriority="high">
+                </picture>
+                <video class="opening-bg-layer" muted playsinline preload="none" disablepictureinpicture></video>
+                <video class="opening-bg-layer" muted playsinline preload="none" disablepictureinpicture></video>
             </div>
             <div class="home-text">
                 <h1><span class="big-letter">B</span>ora<br><span class="big-letter">A</span>yhan</h1>
             </div>
         </section>
 
-        <section class="page-section" id="experience">
+        <section class="page-section" id="experience" aria-label="Experience">
             <div class="section-content">
                 <header class="site-header">
-                    <img src="/assets/icons/headshot.png" alt="Bora Ayhan" class="pfp">
+                    <img src="/assets/icons/headshot-small.webp" data-preview-src="/assets/icons/headshot.png" alt="Bora Ayhan" class="pfp" width="96" height="96" loading="lazy" decoding="async">
                     <div class="site-header-text">
-                        <h1>Bora Ayhan</h1>
-                        <h2>Engineer</h2>
+                        <h2>Bora Ayhan</h2>
+                        <p class="site-subtitle">Engineer</p>
                         <nav class="mobile-contacts" aria-label="Contact and résumé">
                             <a href="https://www.linkedin.com/in/bora-ayhan" target="_blank"
                                 rel="noopener noreferrer" aria-label="LinkedIn profile" title="LinkedIn">
@@ -60,9 +63,10 @@
                     </div>
                 </header>
                 <div class="content">
-                    <div id="experience-list"></div>
+                    <div id="experience-list"><p class="experience-status" role="status">Loading experience…</p></div>
+                    <noscript><p>View my <a href="/resume.pdf">résumé</a> for experience and education.</p></noscript>
                     <button class="experience-toggle" type="button"
-                        aria-expanded="false" aria-controls="experience-list">See details</button>
+                        aria-expanded="false" aria-controls="experience-list" hidden>See details</button>
                 </div>
             </div>
         </section>
@@ -70,7 +74,7 @@
         <section class="page-section" id="projects">
             <div class="section-content">
                 <div class="content">
-                    <h1>Projects</h1>
+                    <h2 class="section-title">Projects</h2>
                     <ul class="bullets">
                         <li class="entry project-entry">
                             <div class="entry-text">
@@ -84,8 +88,8 @@
                                     alt="TALON system architecture"
                                     loading="lazy" width="929" height="1173" decoding="async">
                                 <img class="project-image project-image-cropped" style="--ar: 2.9908"
-                                    src="/assets/project_images/LongRangeUAVPhoto.png" alt="Long-range UAV"
-                                    loading="lazy" width="2803" height="1562" decoding="async">
+                                    src="/assets/project_images/LongRangeUAVPhoto.webp" data-preview-src="/assets/project_images/LongRangeUAVPhoto.png" alt="Long-range UAV"
+                                    loading="lazy" width="1600" height="892" decoding="async">
                             </div>
                         </li>
                         <li class="entry project-entry" hidden>
@@ -111,7 +115,7 @@
         </section>
     </main>
 
-    <script src="/script.js"></script>
+    <script src="/script.js?v=3" defer></script>
 </body>
 
 </html>

@@ -23,7 +23,23 @@ start at zero; negative positions count backward from the end:
 Use `null` to explicitly leave a clip unpinned. Positions must be unique integers
 within the playlist length. Preloading preserves each cycle's selected order.
 
-Desktop and mobile use the same original videos and centered framing.
+The originals are build inputs. Playback uses H.264 MP4 files in
+`assets/cover_video/optimized/`: desktop fits within 1280 × 720 and mobile uses
+a centered 432 × 768 crop. Both use 24 fps, no audio, and fast-start metadata.
+A small responsive poster appears immediately. Only the first visible clip
+loads at startup; the next is prepared near the end of playback. Reduced-motion
+and data-saving preferences keep the static poster. A button pauses/resumes video.
+
+After changing a source video, regenerate the variants with FFmpeg installed:
+
+```sh
+python tools/optimize_media.py
+```
+
+Small headshot, logo, favicon, and project-image variants are generated with
+`python tools/optimize_images.py` (requires Pillow). Full-size originals remain
+available for previews and regeneration. Space Grotesk is served locally from
+`assets/fonts/`, with its license included.
 
 ## Blueprint background
 
